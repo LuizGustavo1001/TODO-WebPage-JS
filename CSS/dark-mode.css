@@ -132,3 +132,13 @@
     background: var(--dm-remove-button-clr);
     color: white;
 }
+.dark-mode .menu-list {
+    background: var(--dm-bg-clr);
+}
+.dark-mode .menu-list li {
+    color: var(--dm-secondary-clr);
+}
+.dark-mode .menu-list li:hover{
+    background: var(--dm-secondary-clr);
+    color: var(--dm-primary-clr);
+}

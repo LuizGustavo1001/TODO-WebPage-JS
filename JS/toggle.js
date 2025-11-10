@@ -3,32 +3,24 @@ const body = document.body;
 /* DARK MODE BUTTONS */
 const themeSwitchButtons = document.querySelectorAll(".dark-mode-icon");
 
-themeSwitchButtons.forEach(button => {
-    button.addEventListener("click", changeTheme);
-});
+themeSwitchButtons.forEach(button => {button.addEventListener("click", changeTheme);});
 
 /* VERIFY THE LAST THEME */
 const savedTheme = localStorage.getItem("theme");
-if(savedTheme == "dark"){
-    changeTheme();
-}
+if(savedTheme == "dark"){changeTheme()}
 /* VERIFY THE LAST THEME */
 
 function changeTheme(){
-    const darkModeIcon = document.querySelectorAll(".dark");
-    const lightModeIcon = document.querySelectorAll(".light");
-
     body.classList.toggle("dark-mode");
+
+    const darkModeIcon  = document.querySelectorAll(".dark");
+    const lightModeIcon = document.querySelectorAll(".light");
 
     const isDark = body.classList.contains("dark-mode");
     localStorage.setItem("theme", isDark ? "dark" : "light"); // True = dark, False = light
 
-    darkModeIcon.forEach(icon => {
-        icon.classList.toggle("hidden-icon");
-    });
-    lightModeIcon.forEach(icon => {
-        icon.classList.toggle("hidden-icon");
-    });
+    darkModeIcon.forEach(icon  => {icon.classList.toggle("hidden-icon")});
+    lightModeIcon.forEach(icon => {icon.classList.toggle("hidden-icon")});
 }
 /* DARK MODE BUTTONS */
 
@@ -44,29 +36,22 @@ rightPage.addEventListener("click", () =>  {changePage("toFinished")});
 
 /* VERIFY THE LAST PAGE */
 const savedPage = localStorage.getItem("page");
-if(savedPage == "page2"){
-    changePage('toFinished');
-}
+if(savedPage == "page2"){changePage('toFinished')}
 /* VERIFY THE LAST PAGE */
 
 function changePage(location){
     switch(location){
         case "toPending":{
             // change if page = not finished tasks
-            if(rightPage.classList.contains("selected")){
-                togglePages();
-            }
+            if(rightPage.classList.contains("selected")){togglePages()}
             break;
         }
         case "toFinished":{
             // change if page = finished tasks
-            if(leftPage.classList.contains("selected")){
-                togglePages();
-            }
+            if(leftPage.classList.contains("selected")){togglePages()}
             break;
         }
     }
-
     const isPage1 = body.classList.contains("page1");
     localStorage.setItem("page", isPage1 ? "page1" : "page2"); // True = page1, False = page2
 }
@@ -86,16 +71,22 @@ function togglePages(){
 
 /* OPEN POP-UP */
 const addTaskButton     = document.querySelector(".add-task-icon");
+const changeTaskButton  = document.querySelectorAll(".task-box");
 
 const addTaskPopUp      = document.querySelector(".add-task");
 const changeTaskPopUp   = document.querySelector(".change-task");
 
 addTaskButton.addEventListener("click", () => {displayPopUp("add-task")});
+changeTaskButton.forEach(taskBox => {taskBox.addEventListener("click", () => {displayPopUp("change-task")});});
 
 function displayPopUp(popUpLabel){
     switch(popUpLabel){
         case "add-task":{
             addTaskPopUp.classList.toggle("hidden-div");
+            break;
+        }
+        case "change-task":{
+            changeTaskPopUp.classList.toggle("hidden-div");
             break;
         }
         default:{
@@ -114,12 +105,8 @@ popUpExitButton.forEach(button => {button.addEventListener("click", closePopUp)}
 const popUpBox = document.querySelectorAll(".pop-up-container");
 
 function closePopUp(){
-    popUpBox.forEach(popUp => {
-        // hide the popup that are displayed
-        if(! popUp.classList.contains("hidden-div")){
-            popUp.classList.add("hidden-div");
-        }
-    });
+    // hide the popup that are displayed
+    popUpBox.forEach(popUp => {if(! popUp.classList.contains("hidden-div")){popUp.classList.add("hidden-div")}});
 }
 /* CLOSE POP-UP*/
 

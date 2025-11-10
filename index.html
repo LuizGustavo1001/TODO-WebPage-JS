@@ -18,7 +18,7 @@
     <title>ToDo List - JS</title>
 </head>
 <body class="page1">
-    <div class="pop-up-container change-task hidden-div">
+    <div class="pop-up-container add-task hidden-div">
         <div class="pop-up-box">
             <div class="pop-up-title">
                 <p>Adicionar nova tarefa</p>
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class="pop-up-container add-task hidden-div">
+    <div class="pop-up-container change-task hidden-div">
         <div class="pop-up-box">
             <div class="pop-up-title">
                 <p>Alterar dados de uma tarefa</p>
@@ -84,9 +84,7 @@
 
                 <div class="page-id-text">
                     <h1>Tarefas Não Concluídas</h1>
-                    <p>
-                        Clique sobre a tarefa para editá-la.
-                    </p>
+                    <p>Clique sobre a tarefa para editá-la.</p>
                     <p>
                         Clique no botão 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -98,6 +96,29 @@
             </div>
 
             <ul class="main-title-nav">
+                <abbr title="Clique aqui para adicionar uma nova tarefa.">
+                    <li class="add-task-icon alt-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                        </svg>
+                    </li>
+                </abbr>
+                
+                <li class="order-tasks-icon default-icon order-pending menu">
+                    <abbr title="Clique aqui para alterar a ordenação das tarefas.">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path fill-rule="evenodd" d="M6.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.25 4.81V16.5a.75.75 0 0 1-1.5 0V4.81L3.53 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5Zm9.53 4.28a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V7.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                        </svg>
+                    </abbr>
+
+                    <ul class="menu-list">
+                        <li>(A-Z)</li>
+                        <li>(Z-A)</li>
+                        <li>Data Crescente</li>
+                        <li>Data Decrescente</li>
+                    </ul>
+                </li>
+
                 <li class="dark-mode-icon default-icon">
                     <svg class="dark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
                         <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 0 1 .162.819A8.97 8.97 0 0 0 9 6a9 9 0 0 0 9 9 8.97 8.97 0 0 0 3.463-.69.75.75 0 0 1 .981.98 10.503 10.503 0 0 1-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 0 1 .818.162Z" clip-rule="evenodd" />
@@ -107,22 +128,6 @@
                         <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.166a.75.75 0 0 0-1.06-1.06l-1.591 1.59a.75.75 0 1 0 1.06 1.061l1.591-1.59ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5H21a.75.75 0 0 1 .75.75ZM17.834 18.894a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 1 0-1.061 1.06l1.59 1.591ZM12 18a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.758 17.303a.75.75 0 0 0-1.061-1.06l-1.591 1.59a.75.75 0 0 0 1.06 1.061l1.591-1.59ZM6 12a.75.75 0 0 1-.75.75H3a.75.75 0 0 1 0-1.5h2.25A.75.75 0 0 1 6 12ZM6.697 7.757a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 0 0-1.061 1.06l1.59 1.591Z" />
                     </svg>
                 </li>
-
-                <abbr title="Clique aqui para alterar a ordem das tarefas.">
-                    <li class="order-tasks-icon default-icon order-pending">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path fill-rule="evenodd" d="M6.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.25 4.81V16.5a.75.75 0 0 1-1.5 0V4.81L3.53 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5Zm9.53 4.28a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V7.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                        </svg>
-                    </li>
-                </abbr>
-
-                <abbr title="Clique aqui para adicionar uma nova tarefa.">
-                    <li class="add-task-icon alt-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path fill-rule="evenodd" d="M12 3.75a.75.75 0 0 1 .75.75v6.75h6.75a.75.75 0 0 1 0 1.5h-6.75v6.75a.75.75 0 0 1-1.5 0v-6.75H4.5a.75.75 0 0 1 0-1.5h6.75V4.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                        </svg>
-                    </li>
-                </abbr>
             </ul>
         </section>
 
@@ -137,6 +142,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Adicionada: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -149,6 +155,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Adicionada: 17/10/2025</strong></p>
                     </div>
                 </li>
                 
@@ -161,6 +168,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Adicionada: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -173,6 +181,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Adicionada: 17/10/2025</strong></p>
                     </div>
                 </li>
             </ul>
@@ -198,6 +207,20 @@
             </div>
 
             <ul class="main-title-nav">
+                <li class="order-tasks-icon default-icon order-pending menu">
+                    <abbr title="Clique aqui para alterar a ordenação das tarefas.">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                            <path fill-rule="evenodd" d="M6.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.25 4.81V16.5a.75.75 0 0 1-1.5 0V4.81L3.53 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5Zm9.53 4.28a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V7.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
+                        </svg>
+                    </abbr>
+
+                    <ul class="menu-list">
+                        <li>(A-Z)</li>
+                        <li>(Z-A)</li>
+                        <li>Data Crescente</li>
+                        <li>Data Decrescente</li>
+                    </ul>
+                </li>
                 <li class="dark-mode-icon default-icon">
                     <svg class="dark size-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path fill-rule="evenodd" d="M9.528 1.718a.75.75 0 0 1 .162.819A8.97 8.97 0 0 0 9 6a9 9 0 0 0 9 9 8.97 8.97 0 0 0 3.463-.69.75.75 0 0 1 .981.98 10.503 10.503 0 0 1-9.694 6.46c-5.799 0-10.5-4.7-10.5-10.5 0-4.368 2.667-8.112 6.46-9.694a.75.75 0 0 1 .818.162Z" clip-rule="evenodd" />
@@ -207,13 +230,7 @@
                         <path d="M12 2.25a.75.75 0 0 1 .75.75v2.25a.75.75 0 0 1-1.5 0V3a.75.75 0 0 1 .75-.75ZM7.5 12a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM18.894 6.166a.75.75 0 0 0-1.06-1.06l-1.591 1.59a.75.75 0 1 0 1.06 1.061l1.591-1.59ZM21.75 12a.75.75 0 0 1-.75.75h-2.25a.75.75 0 0 1 0-1.5H21a.75.75 0 0 1 .75.75ZM17.834 18.894a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 1 0-1.061 1.06l1.59 1.591ZM12 18a.75.75 0 0 1 .75.75V21a.75.75 0 0 1-1.5 0v-2.25A.75.75 0 0 1 12 18ZM7.758 17.303a.75.75 0 0 0-1.061-1.06l-1.591 1.59a.75.75 0 0 0 1.06 1.061l1.591-1.59ZM6 12a.75.75 0 0 1-.75.75H3a.75.75 0 0 1 0-1.5h2.25A.75.75 0 0 1 6 12ZM6.697 7.757a.75.75 0 0 0 1.06-1.06l-1.59-1.591a.75.75 0 0 0-1.061 1.06l1.59 1.591Z" />
                     </svg>
                 </li>
-                <abbr title="Clique aqui para alterar a ordem das tarefas.">
-                    <li class="order-tasks-icon default-icon order-finished">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
-                            <path fill-rule="evenodd" d="M6.97 2.47a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L8.25 4.81V16.5a.75.75 0 0 1-1.5 0V4.81L3.53 8.03a.75.75 0 0 1-1.06-1.06l4.5-4.5Zm9.53 4.28a.75.75 0 0 1 .75.75v11.69l3.22-3.22a.75.75 0 1 1 1.06 1.06l-4.5 4.5a.75.75 0 0 1-1.06 0l-4.5-4.5a.75.75 0 1 1 1.06-1.06l3.22 3.22V7.5a.75.75 0 0 1 .75-.75Z" clip-rule="evenodd" />
-                        </svg>
-                    </li>
-                </abbr>
+                
             </ul>
         </section>
 
@@ -228,6 +245,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -240,6 +258,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -252,6 +271,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -264,6 +284,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -276,6 +297,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -288,6 +310,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -300,6 +323,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -312,6 +336,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
 
@@ -324,6 +349,7 @@
                         <p>
                             Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
                         </p>
+                        <p><strong>Concluída: 17/10/2025</strong></p>
                     </div>
                 </li>
             </ul>

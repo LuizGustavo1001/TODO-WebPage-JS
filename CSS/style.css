@@ -162,10 +162,12 @@ main{
 }
 .tasks-display .task-box div h2{
     font-weight: 500;
+    font-size: 1.3em;
 }
 .tasks-display .task-box div p{
     color: var(--fourth-clr);
     font-weight: 300;
+    font-size: 0.9em;
 }
 .tasks-display .task-box svg{
     fill: var(--primary-clr);
@@ -254,7 +256,7 @@ footer svg{
     justify-content: space-between;
 
     background: var(--primary-clr);
-    color: var(--secondary-clr);
+    color: var(--tertiary-clr);
 
     border-radius: 50px 50px 0 0;
 }
@@ -347,6 +349,49 @@ button{
     height: 100px;
 }
 
+.menu {
+    position: relative;
+}
+.menu-list {
+    min-width: 140px;
+
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: none;
+
+    background: var(--tertiary-clr);
+    border-radius: var(--border-radius-1);
+    
+    box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+
+    text-align: center;
+
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition-time);
+}
+.menu:hover .menu-list {
+    display: block;
+    opacity: 1;
+    pointer-events: auto;
+}
+.menu-list li {
+    padding: 1em 2em;
+
+    display: block;
+    color: var(--primary-clr);
+
+    border-radius: 0;
+    cursor: pointer;
+    font-size: 1em;
+}
+.menu-list li:hover{
+    background: var(--secondary-clr);
+}
+
+
 
 @media(min-width: 1024px){
     body{
@@ -366,7 +411,6 @@ button{
     .page-id-text p{
         color: var(--fourth-clr);
         font-size: 1em;
-
     }
 
     .main-title{
@@ -376,18 +420,34 @@ button{
     .main-title-nav{
         gap: 1.5em;
     }
+    .main-title-nav li abbr{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
     .main-title-nav li svg{
         width: 25px
     }
 
+     .tasks-display{
+        height: 70vh;
+    }
     .tasks-display .task-box{
         display: flex;
     }
-
-    .tasks-display{
-        height: 70vh;
+    .tasks-display .task-box div{
+        display: flex;
+        flex-direction: column;
+        gap: 0.3em;
     }
+    .tasks-display .task-box div h2{
+        font-size: 1.4em;
+    }
+    .tasks-display .task-box div p{
 
+        font-size: 1.1em;
+    }
+   
     .pages-nav{
         margin-top: 1em;
     }
