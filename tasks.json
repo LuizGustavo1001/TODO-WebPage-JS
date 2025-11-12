@@ -1,0 +1,23 @@
+{
+	"tasks":
+	[
+		{
+			"id":"1",
+			"title":"título 1",
+			"desc":"descrição 1",
+			"date":"2025-08-11",
+			"dateFinish": "",
+			"status": "pending"
+		},
+		{
+			"id":"2",
+			"title":"título 2",
+			"desc":"descrição legal 2",
+			"date":"2025-10-11",
+			"dateFinish": "2025-10-12",
+			"status": "finished"
+		}
+	] 
+}
+
+

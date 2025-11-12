@@ -145,7 +145,7 @@ main{
     padding: 1em 0.5em 1em 0.5em;
 
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 0.1fr auto;
     align-items: center;
     gap: 0.5em;
 
@@ -277,7 +277,7 @@ footer svg{
     flex-direction: column;
     gap: 1em;
 
-    background: var(--secondary-clr);
+    background: var(--bg-clr);
     box-shadow: 4px 4px 4px var(--box-shadow-clr-2);
 
     border-radius: 0 0 50px 50px;

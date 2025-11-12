@@ -71,13 +71,17 @@ function togglePages(){
 
 /* OPEN POP-UP */
 const addTaskButton     = document.querySelector(".add-task-icon");
-const changeTaskButton  = document.querySelectorAll(".task-box");
 
 const addTaskPopUp      = document.querySelector(".add-task");
 const changeTaskPopUp   = document.querySelector(".change-task");
 
 addTaskButton.addEventListener("click", () => {displayPopUp("add-task")});
-changeTaskButton.forEach(taskBox => {taskBox.addEventListener("click", () => {displayPopUp("change-task")});});
+document.addEventListener("click", function(event) {
+    const taskBox = event.target.closest(".task-box");
+    if(taskBox){
+        displayPopUp("change-task");
+    }
+});
 
 function displayPopUp(popUpLabel){
     switch(popUpLabel){
