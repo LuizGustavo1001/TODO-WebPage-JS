@@ -289,6 +289,10 @@ footer svg{
 
     font-size: 1.3em;
 }
+.pop-up-main .pop-up-input small{
+    color: var(--fourth-clr);
+}
+
 .pop-up-main .pop-up-input input{
     padding: 1em;
 

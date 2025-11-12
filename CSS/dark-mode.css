@@ -99,9 +99,12 @@
     background: var(--dm-bg-clr);
     box-shadow: 4px 4px 4px var(--dm-box-shadow-clr-1);
 }
+.dark-mode .pop-up-main .pop-up-input small{
+    color: var(--dm-tertiary-clr);
+}
 .dark-mode .pop-up-main .pop-up-input input{
     border: 1px solid var(--dm-primary-clr);
-    color: var(--dm-primary-clr);
+    color: var(--dm-secondary-clr);
     background: var(--dm-primary-clr);
 }
 .dark-mode .pop-up-main .pop-up-input input:hover,

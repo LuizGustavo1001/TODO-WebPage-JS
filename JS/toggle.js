@@ -73,45 +73,48 @@ function togglePages(){
 const addTaskButton     = document.querySelector(".add-task-icon");
 
 const addTaskPopUp      = document.querySelector(".add-task");
-const changeTaskPopUp   = document.querySelector(".change-task");
+const changeTaskPopUp   = document.querySelectorAll(".change-task");
+
 
 addTaskButton.addEventListener("click", () => {displayPopUp("add-task")});
 document.addEventListener("click", function(event) {
     const taskBox = event.target.closest(".task-box");
     if(taskBox){
-        displayPopUp("change-task");
+        const taskId = taskBox.dataset.id;
+        displayPopUp("change-task", taskId);
     }
 });
 
-function displayPopUp(popUpLabel){
+function displayPopUp(popUpLabel, taskId = null){
     switch(popUpLabel){
-        case "add-task":{
+        case "add-task":
             addTaskPopUp.classList.toggle("hidden-div");
             break;
-        }
-        case "change-task":{
-            changeTaskPopUp.classList.toggle("hidden-div");
+        case "change-task":
+            if (!taskId) return console.error("ERROR: Unknown selected task ID");
+            const popup = document.querySelector(`.change-task[data-id="${taskId}"]`);
+            if(popup){
+                popup.classList.toggle("hidden-div")
+            }else{
+                console.error(`ERROR: Unknown selected task${taskId}.`)
+            }
             break;
-        }
-        default:{
+        default:
             console.log("ERRO: selected popup does not exists.");
             break;
-        }
     }
 }
 /* OPEN POP-UP */
 
 
 /* CLOSE POP-UP*/
-const popUpExitButton = document.querySelectorAll(".exit-button");
-popUpExitButton.forEach(button => {button.addEventListener("click", closePopUp)});
+document.addEventListener("click", function(event){
+    const exitButton = event.target.closest(".exit-button");
+    if (!exitButton) return; // clicked on something thats is not the button
+    const popup = exitButton.closest(".pop-up-container"); // popup closest to the clicked exitButton
+    if (popup) popup.classList.add("hidden-div");
 
-const popUpBox = document.querySelectorAll(".pop-up-container");
-
-function closePopUp(){
-    // hide the popup that are displayed
-    popUpBox.forEach(popUp => {if(! popUp.classList.contains("hidden-div")){popUp.classList.add("hidden-div")}});
-}
+});
 /* CLOSE POP-UP*/
 
 /* POP-UP */

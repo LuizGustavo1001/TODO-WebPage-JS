@@ -29,45 +29,17 @@
 
             <div class="pop-up-main">
                 <div class="pop-up-input">
-                    <label for="itaskName1">Título: </label>
-                    <input type="text" name="taskName1" id="itaskName1" placeholder="Máximo 40 caracteres" maxlength="40">
+                    <label for="itaskName">Título: </label>
+                    <input type="text" name="taskName" id="itaskName" placeholder="Máximo 40 caracteres" maxlength="40">
                 </div>
 
                 <div class="pop-up-input descInput">
-                    <label for="itaskDesc1">Descrição: </label>
-                    <input type="text" name="taskDesc1" id="itaskDesc1" class="" placeholder="Máximo 300 caracteres" maxlength="300">
+                    <label for="itaskDesc">Descrição: </label>
+                    <input type="text" name="taskDesc" id="itaskDesc" class="" placeholder="Máximo 300 caracteres" maxlength="300">
                 </div>
 
                 <div class="pop-up-buttons">
                     <button class="add-button">Adicionar</button>
-                    <button class="remove-button">Remover Tarefa</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="pop-up-container change-task hidden-div">
-        <div class="pop-up-box">
-            <div class="pop-up-title">
-                <p>Alterar dados de uma tarefa</p>
-                <svg class="size-6 exit-button close-change-task" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
-                </svg>
-            </div>
-
-            <div class="pop-up-main">
-                <div class="pop-up-input">
-                    <label for="itaskName2">Título: </label>
-                    <input type="text" name="taskName2" id="itaskName2" placeholder="Máximo 40 caracteres" maxlength="40">
-                </div>
-
-                <div class="pop-up-input descInput">
-                    <label for="itaskDesc2">Descrição: </label>
-                    <input type="text" name="taskDesc2" id="itaskDesc2" class="" placeholder="Máximo 300 caracteres" maxlength="300">
-                </div>
-
-                <div class="pop-up-buttons">
-                    <button class="submit-button">Confirmar Alteração</button>
                     <button class="remove-button">Remover Tarefa</button>
                 </div>
             </div>
@@ -112,10 +84,10 @@
                     </abbr>
 
                     <ul class="menu-list">
-                        <li>(A-Z)</li>
-                        <li>(Z-A)</li>
-                        <li>Recente</li>
-                        <li>Antigo</li>
+                        <li class="sort-item" data-id="alfAsc">(A-Z)</li>
+                        <li class="sort-item" data-id="alfDesc">(Z-A)</li>
+                        <li class="sort-item" data-id="oldestDate">Recente</li>
+                        <li class="sort-item" data-id="latestDate">Antigo</li>
                     </ul>
                 </li>
 
@@ -132,59 +104,7 @@
         </section>
 
         <section class="tasks-display">
-            <ul class="not-finished-list">
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa não concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Adicionada: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa não concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Adicionada: 17/10/2025</strong></p>
-                    </div>
-                </li>
-                
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa não concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Adicionada: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa não concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Adicionada: 17/10/2025</strong></p>
-                    </div>
-                </li>
-            </ul>
+            <ul class="not-finished-list"></ul>
         </section>
     </main>
 
@@ -215,10 +135,10 @@
                     </abbr>
 
                     <ul class="menu-list">
-                        <li>(A-Z)</li>
-                        <li>(Z-A)</li>
-                        <li>Recente</li>
-                        <li>Antigo</li>
+                        <li class="sort-item" data-id="alfAsc">(A-Z)</li>
+                        <li class="sort-item" data-id="alfDesc">(Z-A)</li>
+                        <li class="sort-item" data-id="oldestDateAlt">Recente</li>
+                        <li class="sort-item" data-id="oldestDateAlt">Antigo</li>
                     </ul>
                 </li>
                 <li class="dark-mode-icon default-icon">
@@ -235,124 +155,7 @@
         </section>
 
         <section class="tasks-display">
-            <ul class="finished-list">
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-
-                <li class="task-box">
-                    <svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 640 640">
-                        <path d="M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z"/>
-                    </svg>
-                    <div>
-                        <h2>Título Tarefa concluída</h2>
-                        <p>
-                            Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna. 
-                        </p>
-                        <p><strong>Concluída: 17/10/2025</strong></p>
-                    </div>
-                </li>
-            </ul>
+            <ul class="finished-list"></ul>
         </section>
     </main>
 
