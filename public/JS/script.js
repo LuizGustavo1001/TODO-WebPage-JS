@@ -1,4 +1,4 @@
-fetch("tasks.json")
+fetch("/tasks")
     .then(res => res.json())
     .then(data => {
         var tasksList = [];
@@ -81,7 +81,7 @@ fetch("tasks.json")
 
                                 <div class="pop-up-buttons">
                                     <button class="submit-button">Confirmar Alteração</button>
-                                    <button class="remove-button">Remover Tarefa</button>
+                                    <button class="remove-button" data-id='${task.id}'>Remover Tarefa</button>
                                 </div>
                             </div>
                         </div>
@@ -115,8 +115,7 @@ fetch("tasks.json")
                     taskBox.append(taskDiv);
                     finishedTaskList.appendChild(taskBox);
                 }
-                console.log("Tasks exibidas com sucesso")
-
+                console.log("Tasks loaded with success.")
             });
         }
 
@@ -128,4 +127,75 @@ fetch("tasks.json")
         });
         /* SORT OPTIONS */
 
-    });
+        // require update file on backend
+        function sendUpdate(dataList){
+            fetch("/update-file", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(dataList)
+            })
+            .then(res => res.json())
+            .then(response => {
+                console.log("Server Answer: ", response);
+            })
+            .catch(error => console.log(error));
+        }
+
+        /* ADD NEW TASK */
+        const addTaskButton = document.querySelector(".add-button");
+        addTaskButton.addEventListener("click", addTask);
+
+        function addTask(){
+            const time = new Date();
+            const currentDate = time.getDate();
+            const currentMonth = time.getMonth();
+            const currentYear = time.getFullYear();
+
+            const date = `${currentDate}/${currentMonth}/${currentYear}`
+
+            const taskName = document.querySelector("#itaskName");
+            const taskNameValue = String(taskName.value);
+
+            const taskDesc = document.querySelector("#itaskDesc");
+            const taskDescValue = String(taskDesc.value);
+            
+            const id = `${lastTaskId+1}`;
+
+            alert(`${date}, ${taskNameValue}, ${taskDescValue}`);
+
+            // add to taskList
+            tasksList.push({
+                id: id,
+                title: taskNameValue,
+                desc: taskDescValue,
+                date: date,
+                dateFinish: "",
+                status: "pending",
+            });
+
+            console.log("New task add with success.");
+
+            // update tasks.json
+            sendUpdate(tasksList);
+            displayPopUp("add-task");
+            displayTasks(tasksList);
+        }
+        /* ADD NEW TASK */
+
+
+        /* REMOVE TASK */
+        const removeTaskButton = document.querySelectorAll(".remove-button");
+        removeTaskButton.forEach(button => {
+            const removeButtonId = button.dataset.id;
+            button.addEventListener("click", () => {removeTask(removeButtonId)});
+        });
+
+        function removeTask(taskId){
+            alert(taskId);
+
+
+        }
+        /* REMOVE TASK */
+
+    })
+    .catch(error => console.error(error));
