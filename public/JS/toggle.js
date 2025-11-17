@@ -113,7 +113,6 @@ document.addEventListener("click", function(event){
     if (!exitButton) return; // clicked on something thats is not the button
     const popup = exitButton.closest(".pop-up-container"); // popup closest to the clicked exitButton
     if (popup) popup.classList.add("hidden-div");
-
 });
 /* CLOSE POP-UP*/
 

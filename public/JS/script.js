@@ -1,6 +1,9 @@
 fetch("/tasks")
     .then(res => res.json())
     .then(data => {
+        const finishedTaskList      = document.querySelector(".finished-list");
+        const notFinishedTaskList   = document.querySelector(".not-finished-list");
+
         var tasksList = [];
 
         data.tasks.forEach(task => {
@@ -9,39 +12,55 @@ fetch("/tasks")
                 title: task.title,
                 desc: task.desc,
                 date: task.date,
+                altDate: task.altDate,
                 dateFinish: task.dateFinish,
+                altDateFinish: task.altDateFinish,
                 status: task.status
-                
             });
         });
         var lastTaskId = tasksList.length; 
         
         // sort tasks
         // default sort
-        sortTasks(tasksList, "alfAsc"); 
+        sortTasks(tasksList, "latestDate"); 
 
         function sortTasks(tasklist, filter){
+            // reset popups on HTML
+            const oldPopUp = document.querySelectorAll(".change-task");
+            oldPopUp.forEach(popUp => {popUp.remove()});
+
             switch(filter){
-            case "alfAsc": // (A-Z) - title
-                tasklist.sort((a,b) => a.title.localeCompare(b.title));
-                break;
-            case "alfDesc": //(Z-A) - title
-                tasklist.sort((a,b) => b.title.localeCompare(a.title));
-                break;
-            case "oldestDate": // oldest add date
-                tasklist.sort((a,b) => new Date(b.date) - new Date(a.date));
-                break;
-            case "latestDate": // latest add date
-                tasklist.sort((a,b) => new Date(a.date) - new Date(b.date));
-                break;
-            case "oldestDateAlt": // oldest finish date
-                tasklist.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish));
-                break;
-            case "latestDateAlt": // latest finish date
-                tasklist.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish));
-                break;
-            default:
-                console.error("ERROR: Unknown selected sort type.")
+                case "alfAsc":
+                    tasklist.sort((a,b) => a.title.localeCompare(b.title));
+                    break;
+
+                case "alfDesc":
+                    tasklist.sort((a,b) => b.title.localeCompare(a.title));
+                    break;
+
+                case "oldestDate":
+                    tasklist.sort((a,b) => new Date(a.date) - new Date(b.date));
+                    break;
+
+                case "latestDate":
+                    tasklist.sort((a,b) => new Date(b.date) - new Date(a.date));
+                    break;
+
+                case "oldestDateAlt":
+                    tasklist.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish));
+                    break;
+
+                case "latestDateAlt":
+                    tasklist.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish));
+                    break;
+
+                case "id":
+                    tasklist.sort((a,b) => Number(a.id) - Number(b.id));
+                    break;
+
+                default:
+                    console.error("ERROR: Unknown selected sort type.");
+                    break;
             }
             displayTasks(tasksList);
         }
@@ -51,9 +70,6 @@ fetch("/tasks")
             const notFinishedTaskIcon = "<svg xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
             const finishedTaskIcon    = "<svg xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
             const exitIcon            = "<svg class='size-6 exit-button close-change-task' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path fill-rule='evenodd' d='M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /></svg>";
-
-            const finishedTaskList      = document.querySelector(".finished-list");
-            const notFinishedTaskList   = document.querySelector(".not-finished-list");
 
             // reset content
             finishedTaskList.innerHTML      = "";
@@ -101,8 +117,8 @@ fetch("/tasks")
                 
                 taskTitle.textContent       = task.title;
                 taskDesc.textContent        = task.desc;
-                taskDate.innerHTML          = `<strong>Adicionado em: ${task.date}</strong>`;
-                taskFinishDate.innerHTML    = `<strong>Finalizado em: ${task.dateFinish || ""}</strong>`;
+                taskDate.innerHTML          = `<strong>Adicionado em: ${task.altDate}</strong>`;
+                taskFinishDate.innerHTML    = `<strong>Finalizado em: ${task.altDateFinish || ""}</strong>`;
 
                  if(task.status === "pending"){
                     taskBox.insertAdjacentHTML("afterbegin", notFinishedTaskIcon);
@@ -129,15 +145,15 @@ fetch("/tasks")
 
         // require update file on backend
         function sendUpdate(dataList){
+            sortTasks(dataList, "id");
+
             fetch("/update-file", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(dataList)
             })
             .then(res => res.json())
-            .then(response => {
-                console.log("Server Answer: ", response);
-            })
+            .then(response => {console.log("Server Answer: ", response)})
             .catch(error => console.log(error));
         }
 
@@ -147,21 +163,21 @@ fetch("/tasks")
 
         function addTask(){
             const time = new Date();
-            const currentDate = time.getDate();
+            const currentDate  = time.getDate();
             const currentMonth = time.getMonth();
-            const currentYear = time.getFullYear();
+            const currentYear  = time.getFullYear();
 
-            const date = `${currentDate}/${currentMonth}/${currentYear}`
+            const date    = `${currentYear}-${currentMonth}-${currentDate}`;
+            const altDate = `${currentDate}/${currentMonth}/${currentYear}`;
 
-            const taskName = document.querySelector("#itaskName");
+            const taskName      = document.querySelector("#itaskName");
             const taskNameValue = String(taskName.value);
 
-            const taskDesc = document.querySelector("#itaskDesc");
+            const taskDesc      = document.querySelector("#itaskDesc");
             const taskDescValue = String(taskDesc.value);
             
             const id = `${lastTaskId+1}`;
-
-            alert(`${date}, ${taskNameValue}, ${taskDescValue}`);
+            lastTaskId++;
 
             // add to taskList
             tasksList.push({
@@ -169,11 +185,15 @@ fetch("/tasks")
                 title: taskNameValue,
                 desc: taskDescValue,
                 date: date,
+                altDate: altDate,
                 dateFinish: "",
+                altDateFinish: "",
                 status: "pending",
             });
 
             console.log("New task add with success.");
+            taskName.value = '';
+            taskDesc.value = '';
 
             // update tasks.json
             sendUpdate(tasksList);
@@ -191,11 +211,20 @@ fetch("/tasks")
         });
 
         function removeTask(taskId){
-            alert(taskId);
+            tasksList.forEach((task, index) => {
+                if(task.id == taskId){
+                    tasksList.pop(index);
+                    console.log("Task removed with success");
+                }
+            })
 
-
+            sendUpdate(tasksList);
+            displayPopUp("change-task", taskId);
+            displayTasks(tasksList);
         }
         /* REMOVE TASK */
+
+        
 
     })
     .catch(error => console.error(error));

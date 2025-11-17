@@ -1,4 +1,4 @@
-# ToDo Web Page List - JavaScript
+# TODO Web Page List - JavaScript
 
 <h2>Lista de tarefas online utilizando <em>JavaScript</em> para recuperar dados de um arquivo <em>JSON</em> contendo as informações de cada tarefa.</h2> 
 
@@ -25,8 +25,14 @@
 <p>OBS: É necessário ter instalado <strong>nodeJS</strong> na sua máquina</p>
 <ul>
     <li>Clonar Projeto</li>
-    <li>Abrir o terminal dentro da pasta do projeto e digitar: <pre>npm init -y npm install express</pre></li>
-    <li>Para iniciar o servidor local basta digitar no console: <pre>node server.js</pre></li>
+    <li>Abrir o terminal dentro da pasta do projeto e digitar: 
+        <pre>npm init -y 
+npm install express</pre>
+    </li>
+    <li>Para iniciar o servidor local basta digitar no console: 
+        <pre>cd server 
+node server.js</pre>
+    </li>
 </ul>
 
 <h3>🗃️ Esquema de Pastas: </h3>
