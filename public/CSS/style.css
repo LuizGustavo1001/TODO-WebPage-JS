@@ -159,6 +159,7 @@ main{
 .tasks-display .task-box div{
     border-left: 1px solid var(--primary-clr);
     padding-left: 0.5em;
+    width: 100%;
 }
 .tasks-display .task-box div h2{
     font-weight: 500;

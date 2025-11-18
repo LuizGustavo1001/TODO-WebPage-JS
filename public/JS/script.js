@@ -1,6 +1,14 @@
 fetch("/tasks")
     .then(res => res.json())
     .then(data => {
+        const time          = new Date();
+        const currentDate   = time.getDate();
+        const currentMonth  = time.getMonth();
+        const currentYear   = time.getFullYear();
+
+        const date    = `${currentYear}-${currentMonth}-${currentDate}`;
+        const altDate = `${currentDate}/${currentMonth}/${currentYear}`;
+
         const finishedTaskList      = document.querySelector(".finished-list");
         const notFinishedTaskList   = document.querySelector(".not-finished-list");
 
@@ -22,12 +30,9 @@ fetch("/tasks")
         
         // sort tasks
         // default sort
-        sortTasks(tasksList, "latestDate"); 
+        sortTasks(tasksList, "alfDesc"); 
 
         function sortTasks(tasklist, filter){
-            // reset popups on HTML
-            const oldPopUp = document.querySelectorAll(".change-task");
-            oldPopUp.forEach(popUp => {popUp.remove()});
 
             switch(filter){
                 case "alfAsc":
@@ -67,13 +72,20 @@ fetch("/tasks")
         
         // display task + edit popUp
         function displayTasks(list){
-            const notFinishedTaskIcon = "<svg xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
-            const finishedTaskIcon    = "<svg xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
+            const notFinishedTaskIcon = "<svg class='conclude-task-icon' xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
+            const finishedTaskIcon    = "<svg class='undo-conclude-icon' xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
             const exitIcon            = "<svg class='size-6 exit-button close-change-task' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path fill-rule='evenodd' d='M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /></svg>";
 
-            // reset content
+            // reset task box content
             finishedTaskList.innerHTML      = "";
             notFinishedTaskList.innerHTML   = "";
+
+            // reset popups on HTML
+            const oldPopUp = document.querySelectorAll(".change-task");
+            oldPopUp.forEach(popUp => {popUp.remove()});
+
+            var pendingAmount  = 0;
+            var finishedAmount = 0;
 
             list.forEach(task => {
                 const popUp = `
@@ -97,7 +109,7 @@ fetch("/tasks")
 
                                 <div class="pop-up-buttons">
                                     <button class="submit-button">Confirmar Alteração</button>
-                                    <button class="remove-button" data-id='${task.id}'>Remover Tarefa</button>
+                                    <button class="remove-button">Remover Tarefa</button>
                                 </div>
                             </div>
                         </div>
@@ -107,9 +119,11 @@ fetch("/tasks")
 
                 const taskBox = document.createElement("li");
                 taskBox.classList.add("task-box");
-                taskBox.dataset.id = task.id;
 
                 const taskDiv           = document.createElement("div");
+                taskDiv.classList.add("task-text");
+                taskDiv.dataset.id = task.id;
+
                 const taskTitle         = document.createElement("h2");
                 const taskDesc          = document.createElement("p");
                 const taskDate          = document.createElement("p");
@@ -120,19 +134,28 @@ fetch("/tasks")
                 taskDate.innerHTML          = `<strong>Adicionado em: ${task.altDate}</strong>`;
                 taskFinishDate.innerHTML    = `<strong>Finalizado em: ${task.altDateFinish || ""}</strong>`;
 
-                 if(task.status === "pending"){
+                if(task.status === "pending"){
                     taskBox.insertAdjacentHTML("afterbegin", notFinishedTaskIcon);
                     taskDiv.append(taskTitle, taskDesc, taskDate);
                     taskBox.append(taskDiv);
                     notFinishedTaskList.appendChild(taskBox);
+                    pendingAmount++;
                 }else{
                     taskBox.insertAdjacentHTML("afterbegin", finishedTaskIcon);
                     taskDiv.append(taskTitle, taskDesc, taskFinishDate);
                     taskBox.append(taskDiv);
                     finishedTaskList.appendChild(taskBox);
+                    finishedAmount++;
                 }
+
                 console.log("Tasks loaded with success.")
             });
+
+            if(pendingAmount == 0){
+                notFinishedTaskList.innerHTML = "<p style='text-align:center'>Parabéns, não há nenhuma tarefa pendente!</p>";    
+            }else if(finishedAmount == 0){
+                finishedTaskList.innerHTML = "<p style='text-align:center;'>Ainda não há nenhuma tarefa concluída.</p>"
+            }
         }
 
         /* SORT OPTIONS */
@@ -152,9 +175,9 @@ fetch("/tasks")
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(dataList)
             })
-            .then(res => res.json())
-            .then(response => {console.log("Server Answer: ", response)})
-            .catch(error => console.log(error));
+            .then(res       => res.json())
+            .then(response  => {console.log("Server Answer: ", response)})
+            .catch(error    => console.log(error));
         }
 
         /* ADD NEW TASK */
@@ -162,14 +185,6 @@ fetch("/tasks")
         addTaskButton.addEventListener("click", addTask);
 
         function addTask(){
-            const time = new Date();
-            const currentDate  = time.getDate();
-            const currentMonth = time.getMonth();
-            const currentYear  = time.getFullYear();
-
-            const date    = `${currentYear}-${currentMonth}-${currentDate}`;
-            const altDate = `${currentDate}/${currentMonth}/${currentYear}`;
-
             const taskName      = document.querySelector("#itaskName");
             const taskNameValue = String(taskName.value);
 
@@ -206,25 +221,79 @@ fetch("/tasks")
         /* REMOVE TASK */
         const removeTaskButton = document.querySelectorAll(".remove-button");
         removeTaskButton.forEach(button => {
-            const removeButtonId = button.dataset.id;
-            button.addEventListener("click", () => {removeTask(removeButtonId)});
+            const taskId = button.closest(".pop-up-container").dataset.id;
+            button.addEventListener("click", () => {modifyTask("remove", taskId)});
         });
-
-        function removeTask(taskId){
-            tasksList.forEach((task, index) => {
-                if(task.id == taskId){
-                    tasksList.pop(index);
-                    console.log("Task removed with success");
-                }
-            })
-
-            sendUpdate(tasksList);
-            displayPopUp("change-task", taskId);
-            displayTasks(tasksList);
-        }
         /* REMOVE TASK */
-
         
 
+        /* CHANGE TASK */
+        const changeTaskButton = document.querySelectorAll(".submit-button");
+        changeTaskButton.forEach(button => {
+            const taskId = button.closest(".pop-up-container").dataset.id;
+            button.addEventListener("click", () => {modifyTask("mod_title_desc", taskId)});
+        });
+        /* CHANGE TASK */
+
+
+        /* COMPLETE TASK */
+        const undoConcludeTaskIcon = document.querySelectorAll(".undo-conclude-icon");
+        const concludeTaskIcon     = document.querySelectorAll(".conclude-task-icon");
+
+        undoConcludeTaskIcon.forEach(icon => {
+            icon.addEventListener("click", () => {
+                const taskId = icon.closest(".task-box").dataset.id;
+                modifyTask("mod_status", taskId, "pending");
+            })
+        });
+
+        concludeTaskIcon.forEach(icon => {
+            icon.addEventListener("click", () => {
+                const taskId = icon.closest(".task-box").dataset.id;
+                modifyTask("mod_status", taskId, "finished");
+            })
+        })
+        /* COMPLETE TASK */
+
+
+        function modifyTask(action, taskId, changeTo = null){
+            tasksList.forEach((task, index) => {
+                if(task.id == taskId){
+                    switch(action){
+                        case "mod_title_desc":
+                            var newTitleInput   = document.querySelector(`#itaskName${taskId}`);
+                            var newTitle        = String(newTitleInput.value);
+
+                            var newDescInput    = document.querySelector(`#itaskDesc${taskId}`);
+                            var newDesc         = String(newDescInput.value);
+
+                            tasksList[index].title = newTitle;
+                            tasksList[index].desc  = newDesc;
+
+                            console.log("Task changed with success");
+                            alert(`Título e/ou  descrição da tarefa de Id = ${index} alterado com sucesso.`);
+                            break;
+                        
+                        case "remove":
+                            tasksList.splice(index, 1); // index and amount
+                            console.log("Task removed with success");
+
+                            alert(`Tarefa de Id = ${index} removida com sucesso.`);
+                            break;
+                        
+                        case "mod_status":
+                            tasksList[index].status         = changeTo;
+                            tasksList[index].dateFinish     = date;
+                            tasksList[index].altDateFinish  = altDate;
+
+                            console.log("Task status changed with success");
+                            break;
+                    }
+                }
+            })
+            displayPopUp("change-task", taskId);
+            displayTasks(tasksList);
+            sendUpdate(tasksList);
+        }
     })
     .catch(error => console.error(error));

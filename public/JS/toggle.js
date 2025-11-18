@@ -78,9 +78,9 @@ const changeTaskPopUp   = document.querySelectorAll(".change-task");
 
 addTaskButton.addEventListener("click", () => {displayPopUp("add-task")});
 document.addEventListener("click", function(event) {
-    const taskBox = event.target.closest(".task-box");
-    if(taskBox){
-        const taskId = taskBox.dataset.id;
+    const taskTextBox = event.target.closest(".task-text");
+    if(taskTextBox){
+        const taskId = taskTextBox.dataset.id;
         displayPopUp("change-task", taskId);
     }
 });

@@ -45,9 +45,9 @@ node server.js</pre>
     |   |-index.html       (Página Web do Projeto)
     |
     |-server
-    |   |-server.js        (JavaScript ponte entre o BackEnd e o FrontEnd)
-    |   |-tasks.json       (Arquivo no qual as tarefas estão armazenadas)
-    |
+        |-server.js        (JavaScript ponte entre o BackEnd e o FrontEnd)
+        |-tasks.json       (Arquivo no qual as tarefas estão armazenadas)
+    
 </pre>
 <p>Após instalar os módulos necessários é necessário que a pasta <em>node_modules</em> e os arquivos <em>package.json</em> e <em>package-lock.json</em> estejam presentes na raiz do projeto.</p>
 
