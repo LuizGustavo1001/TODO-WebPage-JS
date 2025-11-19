@@ -31,7 +31,10 @@
 <p>Important: You need <strong>Node.js</strong> installed on your machine.</p>
 
 <ul>
-    <li>Clone the repository <pre>git clone https://github.com/LuizGustavo1001/TODO-WebPage-JS.git cd Downloads</pre></li>
+    <li>Clone the repository 
+        <pre>git clone https://github.com/LuizGustavo1001/TODO-WebPage-JS.git
+cd TODO-WebPage-JS</pre>
+</li>
     <li>
         Open the terminal inside of the project directory and install the <em>npm</em> dependences:
         <pre>npm init -y 
