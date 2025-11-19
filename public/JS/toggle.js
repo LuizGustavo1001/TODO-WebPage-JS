@@ -2,8 +2,7 @@ const body = document.body;
 
 /* DARK MODE BUTTONS */
 const themeSwitchButtons = document.querySelectorAll(".dark-mode-icon");
-
-themeSwitchButtons.forEach(button => {button.addEventListener("click", changeTheme);});
+themeSwitchButtons.forEach(button => {button.addEventListener("click", changeTheme)});
 
 // verify last theme
 const savedTheme = localStorage.getItem("theme");
@@ -36,7 +35,6 @@ rightPage.addEventListener("click", () =>  {changePage("toFinished")});
 // verify last page
 const savedPage = localStorage.getItem("page");
 if(savedPage == "page2"){changePage('toFinished')}
-
 
 function changePage(location){
     switch(location){
@@ -94,12 +92,10 @@ function displayPopUp(popUpLabel, taskId = null){
     }
 }
 
-// close pop up
-document.addEventListener("click", function(event){
-    const exitButton = event.target.closest(".exit-button");
-    if (!exitButton) return; // clicked on something thats is not the button
-    const popup = exitButton.closest(".pop-up-container"); // popup closest to the clicked exitButton
-    if (popup) popup.classList.add("hidden-div");
-});
+function closePopUp(taskId){
+    const popUp = document.querySelector(`.pop-up-container[data-id="${taskId}"]`);
+    if(popUp)popUp.classList.add("hidden-div");
+}
+
 
 /* POP-UP */

@@ -26,48 +26,47 @@ fetch("/tasks")
                 status: task.status
             });
         });
-        var lastTaskId = tasksList.length; 
+
+        var lastTaskId = tasksList[(tasksList.length) - 1].id;
         
-        // sort tasks
         // default sort
-        sortTasks(tasksList, "alfDesc"); 
-
-        function sortTasks(tasklist, filter){
-
+        sortTasks(tasksList, "oldestDate"); 
+        
+        function sortTasks(taskList, filter){
             switch(filter){
                 case "alfAsc":
-                    tasklist.sort((a,b) => a.title.localeCompare(b.title));
+                    taskList.sort((a,b) => a.title.localeCompare(b.title));
                     break;
 
                 case "alfDesc":
-                    tasklist.sort((a,b) => b.title.localeCompare(a.title));
+                    taskList.sort((a,b) => b.title.localeCompare(a.title));
                     break;
 
                 case "oldestDate":
-                    tasklist.sort((a,b) => new Date(a.date) - new Date(b.date));
+                    taskList.sort((a,b) => new Date(a.date) - new Date(b.date));
                     break;
 
                 case "latestDate":
-                    tasklist.sort((a,b) => new Date(b.date) - new Date(a.date));
+                    taskList.sort((a,b) => new Date(b.date) - new Date(a.date));
                     break;
 
                 case "oldestDateAlt":
-                    tasklist.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish));
+                    taskList.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish));
                     break;
 
                 case "latestDateAlt":
-                    tasklist.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish));
+                    taskList.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish));
                     break;
 
                 case "id":
-                    tasklist.sort((a,b) => Number(a.id) - Number(b.id));
+                    taskList.sort((a,b) => Number(a.id) - Number(b.id));
                     break;
 
                 default:
                     console.error("ERROR: Unknown selected sort type.");
                     break;
             }
-            displayTasks(tasksList);
+            displayTasks(taskList);
         }
         
         // display task + edit popUp
@@ -117,13 +116,13 @@ fetch("/tasks")
                 `;
                 body.insertAdjacentHTML("afterbegin", popUp);
 
-                const taskBox = document.createElement("li");
+                const taskBox       = document.createElement("li");
                 taskBox.classList.add("task-box");
-                taskBox.dataset.id = task.id;
+                taskBox.dataset.id  = task.id;
 
                 const taskDiv           = document.createElement("div");
                 taskDiv.classList.add("task-text");
-                taskDiv.dataset.id = task.id;
+                taskDiv.dataset.id      = task.id;
 
                 const taskTitle         = document.createElement("h2");
                 const taskDesc          = document.createElement("p");
@@ -153,12 +152,12 @@ fetch("/tasks")
             });
 
             // open pop up event
-            document.addEventListener("click", function(event) {
-                const taskTextBox = event.target.closest(".task-text");
-                if(taskTextBox){
-                    const taskId = taskTextBox.dataset.id;
+            const taskTextBox = document.querySelectorAll(".task-text");
+            taskTextBox.forEach(task => {
+                task.addEventListener("click", () => {
+                    const taskId = task.closest(".task-box").dataset.id;
                     displayPopUp("change-task", taskId);
-                }
+                });
             });
 
             // remove task event
@@ -193,24 +192,33 @@ fetch("/tasks")
                 });
             });
 
+            // close popUp
+            const exitButtons = document.querySelectorAll(".exit-button");
+
+            exitButtons.forEach(button => {
+                const taskId = button.closest(".pop-up-container").dataset.id;
+                button.addEventListener("click", () => {closePopUp(taskId)})
+            });
+
             if(pendingAmount == 0){
-                notFinishedTaskList.innerHTML = "<p style='text-align:center'>Parabéns, não há nenhuma tarefa pendente!</p>";    
+                notFinishedTaskList.innerHTML   = "<p style='text-align:center'>Parabéns, não há nenhuma tarefa pendente!</p>";    
             }else if(finishedAmount == 0){
-                finishedTaskList.innerHTML = "<p style='text-align:center;'>Ainda não há nenhuma tarefa concluída.</p>"
+                finishedTaskList.innerHTML      = "<p style='text-align:center;'>Ainda não há nenhuma tarefa concluída.</p>"
             }
         }
 
-        /* SORT OPTIONS */
+        //sort list options
         const sortItem = document.querySelectorAll(".sort-item");
         sortItem.forEach(sort => {
             const filterId = sort.dataset.id;
             sort.addEventListener("click", () => {sortTasks(tasksList, filterId)});
         });
-        /* SORT OPTIONS */
-
+        
         // require update file on backend
         function sendUpdate(dataList){
             sortTasks(dataList, "id");
+
+            lastTaskId = tasksList[(dataList.length) - 1].id
 
             fetch("/update-file", {
                 method: "POST",
@@ -221,11 +229,12 @@ fetch("/tasks")
             .then(response  => {console.log("Server Answer: ", response)})
             .catch(error    => console.log(error));
         }
-
-        /* ADD NEW TASK */
+        
+        // add new task
         const addTaskButton = document.querySelector(".add-button");
         addTaskButton.addEventListener("click", addTask);
 
+        
         function addTask(){
             const taskName      = document.querySelector("#itaskName");
             const taskNameValue = String(taskName.value);
@@ -233,8 +242,7 @@ fetch("/tasks")
             const taskDesc      = document.querySelector("#itaskDesc");
             const taskDescValue = String(taskDesc.value);
             
-            const id = `${lastTaskId+1}`;
-            lastTaskId++;
+            const id = String(Number(lastTaskId)+1);
 
             // add to taskList
             tasksList.push({
@@ -252,12 +260,11 @@ fetch("/tasks")
             taskName.value = '';
             taskDesc.value = '';
 
-            // update tasks.json
-            displayPopUp("change-task", taskId);
+            // update file
+            displayPopUp("add-task");
             displayTasks(tasksList);
             sendUpdate(tasksList);
         }
-        /* ADD NEW TASK */
 
         function modifyTask(action, taskId, changeTo = null){
             tasksList.forEach((task, index) => {
@@ -274,14 +281,14 @@ fetch("/tasks")
                             tasksList[index].desc  = newDesc;
 
                             console.log("Task changed with success");
-                            alert(`Título e/ou  descrição da tarefa de Id = ${index} alterado com sucesso.`);
+                            alert(`Título e/ou descrição da tarefa alterado com sucesso.`);
                             break;
                         
                         case "remove":
                             tasksList.splice(index, 1); // index and amount
-                            console.log("Task removed with success");
 
-                            alert(`Tarefa de Id = ${index} removida com sucesso.`);
+                            console.log("Task removed with success");
+                            alert(`Tarefa removida com sucesso.`);
                             break;
                         
                         case "mod_status":
