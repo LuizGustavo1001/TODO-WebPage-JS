@@ -24,6 +24,7 @@
 *{
     margin: 0;
     padding: 0;
+
 }
 
 ul{
@@ -173,6 +174,7 @@ main{
 .tasks-display .task-box svg{
     fill: var(--primary-clr);
     transition: var(--transition-time);
+    width: 25px;
 }
 .tasks-display .task-box svg:hover{
     fill: var(--fourth-clr);

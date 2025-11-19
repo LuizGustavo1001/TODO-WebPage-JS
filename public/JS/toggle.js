@@ -5,10 +5,9 @@ const themeSwitchButtons = document.querySelectorAll(".dark-mode-icon");
 
 themeSwitchButtons.forEach(button => {button.addEventListener("click", changeTheme);});
 
-/* VERIFY THE LAST THEME */
+// verify last theme
 const savedTheme = localStorage.getItem("theme");
 if(savedTheme == "dark"){changeTheme()}
-/* VERIFY THE LAST THEME */
 
 function changeTheme(){
     body.classList.toggle("dark-mode");
@@ -34,10 +33,10 @@ const rightMain = document.querySelector("#finished-tasks");
 leftPage.addEventListener ("click", () =>  {changePage("toPending")});
 rightPage.addEventListener("click", () =>  {changePage("toFinished")});
 
-/* VERIFY THE LAST PAGE */
+// verify last page
 const savedPage = localStorage.getItem("page");
 if(savedPage == "page2"){changePage('toFinished')}
-/* VERIFY THE LAST PAGE */
+
 
 function changePage(location){
     switch(location){
@@ -69,21 +68,11 @@ function togglePages(){
 
 /* POP-UP */
 
-/* OPEN POP-UP */
+// open pop up
 const addTaskButton     = document.querySelector(".add-task-icon");
-
 const addTaskPopUp      = document.querySelector(".add-task");
-const changeTaskPopUp   = document.querySelectorAll(".change-task");
-
 
 addTaskButton.addEventListener("click", () => {displayPopUp("add-task")});
-document.addEventListener("click", function(event) {
-    const taskTextBox = event.target.closest(".task-text");
-    if(taskTextBox){
-        const taskId = taskTextBox.dataset.id;
-        displayPopUp("change-task", taskId);
-    }
-});
 
 function displayPopUp(popUpLabel, taskId = null){
     switch(popUpLabel){
@@ -104,16 +93,13 @@ function displayPopUp(popUpLabel, taskId = null){
             break;
     }
 }
-/* OPEN POP-UP */
 
-
-/* CLOSE POP-UP*/
+// close pop up
 document.addEventListener("click", function(event){
     const exitButton = event.target.closest(".exit-button");
     if (!exitButton) return; // clicked on something thats is not the button
     const popup = exitButton.closest(".pop-up-container"); // popup closest to the clicked exitButton
     if (popup) popup.classList.add("hidden-div");
 });
-/* CLOSE POP-UP*/
 
 /* POP-UP */

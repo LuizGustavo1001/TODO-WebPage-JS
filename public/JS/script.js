@@ -73,9 +73,9 @@ fetch("/tasks")
         // display task + edit popUp
         function displayTasks(list){
             const notFinishedTaskIcon = "<svg class='conclude-task-icon' xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
-            const finishedTaskIcon    = "<svg class='undo-conclude-icon' xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
             const exitIcon            = "<svg class='size-6 exit-button close-change-task' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path fill-rule='evenodd' d='M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /></svg>";
-
+            const finishedTaskIcon    = "<svg class='undo-conclude-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'><path d='M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z'/></svg>"
+            
             // reset task box content
             finishedTaskList.innerHTML      = "";
             notFinishedTaskList.innerHTML   = "";
@@ -119,6 +119,7 @@ fetch("/tasks")
 
                 const taskBox = document.createElement("li");
                 taskBox.classList.add("task-box");
+                taskBox.dataset.id = task.id;
 
                 const taskDiv           = document.createElement("div");
                 taskDiv.classList.add("task-text");
@@ -149,6 +150,47 @@ fetch("/tasks")
                 }
 
                 console.log("Tasks loaded with success.")
+            });
+
+            // open pop up event
+            document.addEventListener("click", function(event) {
+                const taskTextBox = event.target.closest(".task-text");
+                if(taskTextBox){
+                    const taskId = taskTextBox.dataset.id;
+                    displayPopUp("change-task", taskId);
+                }
+            });
+
+            // remove task event
+            const removeTaskButton = document.querySelectorAll(".remove-button");
+            removeTaskButton.forEach(button => {
+                const taskId = button.closest(".pop-up-container").dataset.id;
+                button.addEventListener("click", () => {modifyTask("remove", taskId)});
+            });
+            
+            // change task event
+            const changeTaskButton = document.querySelectorAll(".submit-button");
+            changeTaskButton.forEach(button => {
+                const taskId = button.closest(".pop-up-container").dataset.id;
+                button.addEventListener("click", () => {modifyTask("mod_title_desc", taskId)});
+            });
+
+            // complete task
+            const undoConcludeTaskIcon = document.querySelectorAll(".undo-conclude-icon");
+            const concludeTaskIcon     = document.querySelectorAll(".conclude-task-icon");
+
+            undoConcludeTaskIcon.forEach(icon => {
+                icon.addEventListener("click", () => {
+                    const taskId = icon.closest(".task-box").dataset.id;
+                    modifyTask("mod_status", taskId, "pending");
+                });
+            });
+
+            concludeTaskIcon.forEach(icon => {
+                icon.addEventListener("click", () => {
+                    const taskId = icon.closest(".task-box").dataset.id;
+                    modifyTask("mod_status", taskId, "finished");
+                });
             });
 
             if(pendingAmount == 0){
@@ -211,50 +253,11 @@ fetch("/tasks")
             taskDesc.value = '';
 
             // update tasks.json
-            sendUpdate(tasksList);
-            displayPopUp("add-task");
+            displayPopUp("change-task", taskId);
             displayTasks(tasksList);
+            sendUpdate(tasksList);
         }
         /* ADD NEW TASK */
-
-
-        /* REMOVE TASK */
-        const removeTaskButton = document.querySelectorAll(".remove-button");
-        removeTaskButton.forEach(button => {
-            const taskId = button.closest(".pop-up-container").dataset.id;
-            button.addEventListener("click", () => {modifyTask("remove", taskId)});
-        });
-        /* REMOVE TASK */
-        
-
-        /* CHANGE TASK */
-        const changeTaskButton = document.querySelectorAll(".submit-button");
-        changeTaskButton.forEach(button => {
-            const taskId = button.closest(".pop-up-container").dataset.id;
-            button.addEventListener("click", () => {modifyTask("mod_title_desc", taskId)});
-        });
-        /* CHANGE TASK */
-
-
-        /* COMPLETE TASK */
-        const undoConcludeTaskIcon = document.querySelectorAll(".undo-conclude-icon");
-        const concludeTaskIcon     = document.querySelectorAll(".conclude-task-icon");
-
-        undoConcludeTaskIcon.forEach(icon => {
-            icon.addEventListener("click", () => {
-                const taskId = icon.closest(".task-box").dataset.id;
-                modifyTask("mod_status", taskId, "pending");
-            })
-        });
-
-        concludeTaskIcon.forEach(icon => {
-            icon.addEventListener("click", () => {
-                const taskId = icon.closest(".task-box").dataset.id;
-                modifyTask("mod_status", taskId, "finished");
-            })
-        })
-        /* COMPLETE TASK */
-
 
         function modifyTask(action, taskId, changeTo = null){
             tasksList.forEach((task, index) => {

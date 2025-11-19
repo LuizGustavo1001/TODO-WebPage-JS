@@ -36,9 +36,9 @@
       "desc": "asdasd",
       "date": "2025-10-17",
       "altDate": "17/10/2025",
-      "dateFinish": "",
-      "altDateFinish": "",
-      "status": "pending"
+      "dateFinish": "2025-10-18",
+      "altDateFinish": "18/10/2025",
+      "status": "finished"
     }
   ]
 }
