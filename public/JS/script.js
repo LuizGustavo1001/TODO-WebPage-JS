@@ -1,13 +1,13 @@
 fetch("/tasks")
     .then(res => res.json())
     .then(data => {
-        const time          = new Date();
-        const currentDate   = time.getDate();
-        const currentMonth  = time.getMonth();
-        const currentYear   = time.getFullYear();
+        const time = new Date();
+        const day   = String(time.getDate()).padStart(2, "0");
+        const month = String(time.getMonth() + 1).padStart(2, "0");
+        const year  = time.getFullYear();
 
-        const date    = `${currentYear}-${currentMonth}-${currentDate}`;
-        const altDate = `${currentDate}/${currentMonth}/${currentYear}`;
+        const date    = `${year}-${month}-${day}`;
+        const altDate = `${day}/${month}/${year}`;
 
         const finishedTaskList      = document.querySelector(".finished-list");
         const notFinishedTaskList   = document.querySelector(".not-finished-list");
@@ -30,7 +30,7 @@ fetch("/tasks")
         var lastTaskId = tasksList[(tasksList.length) - 1].id;
         
         // default sort
-        sortTasks(tasksList, "oldestDate"); 
+        sortTasks(tasksList, "latestDate"); 
         
         function sortTasks(taskList, filter){
             switch(filter){
@@ -228,6 +228,8 @@ fetch("/tasks")
             .then(res       => res.json())
             .then(response  => {console.log("Server Answer: ", response)})
             .catch(error    => console.log(error));
+
+            sortTasks(dataList, "latestDate");
         }
         
         // add new task
