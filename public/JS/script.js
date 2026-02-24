@@ -1,3 +1,50 @@
+const body = document.body
+
+
+const suspMenuIcon  = document.querySelectorAll(".suspended-menu .icon-bg")
+const suspMenuBg    = document.querySelector(".suspended-menu .selected-bg")
+
+let lastLabel = null
+
+suspMenuIcon.forEach(icon => {
+    if(icon.classList.contains("selected")){
+        suspMenuBg.dataset.id = icon.dataset.id
+        suspMenuBg.dataset.id = lastLabel
+    }
+
+    icon.addEventListener("mouseover", () => {
+        suspMenuBg.dataset.id = icon.dataset.id
+    })
+
+    icon.addEventListener("mouseleave", () => {
+        suspMenuBg.dataset.id = lastLabel
+    })
+})
+
+
+/* TOGGLE THEME (dark mode) */
+const toggleThemeIcon = document.querySelector(".toggle-theme")
+toggleThemeIcon.addEventListener("click", toggleTheme)
+
+function toggleTheme(){
+    body.classList.toggle("dark-mode")
+
+    const isDark = body.classList.contains("dark-mode")
+    localStorage.setItem("theme", isDark ? "dark" : "light")
+
+
+    const icons = toggleThemeIcon.querySelectorAll(".toggle-icon")
+    icons.forEach(icon => {icon.classList.toggle("inactive")})
+}
+
+
+/* LOCAL STORAGE */
+const lastTheme = localStorage.getItem("theme") || "light"
+if(lastTheme == "dark"){toggleTheme()}
+
+
+
+/*
 fetch("/tasks")
     .then(res => res.json())
     .then(data => {
@@ -309,3 +356,4 @@ fetch("/tasks")
         }
     })
     .catch(error => console.error(error));
+    */
