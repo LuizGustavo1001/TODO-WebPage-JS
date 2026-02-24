@@ -22,6 +22,8 @@
     --green-350: #A1BFA7;
     --green-300: #CBE4D0;
 
+    --red-400: #e38282;
+
     --fast-transition: 0.2s;
 }
 
@@ -40,7 +42,6 @@ body{
     display: flex;
     flex-direction: column;
 
-    padding: 0.5em;
     min-height: 400px;
     height: 100dvh;
 
@@ -74,6 +75,16 @@ a{
 svg{
     width: 25px;
     color: var(--blue-800);
+}
+
+.container{
+    padding: 0.5em;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 400px;
+    height: 100dvh;
 }
 
 
@@ -326,7 +337,189 @@ main{
 
 
 
+
+/* Pop up */
+.popup-bg{
+    position: absolute;
+
+    display: none;
+
+    width: 100vw;
+    height: 100vh;
+
+    background: rgba(0, 0, 0, 0.27);
+
+    z-index: 1;
+}
+.popup-bg.active{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border-radius: 10px;
+
+    background: var(--white);
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.179);
+}
+
+.popup .title{
+    padding: 1em;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--blue-800);
+
+    border-radius: 10px 10px 0 0;
+
+    margin-bottom: 1em;
+
+    width: 100%;
+}
+.popup .title h1{
+    font-size: 1.3em;
+    font-weight: normal;
+    font-family: var(--serif);
+}
+
+.popup .title svg{
+    cursor: pointer;
+}
+.popup .title svg:hover{
+    rotate: calc(90deg);
+}
+
+.popup .title,
+.popup .title svg{
+    color: var(--blue-200);
+}
+
+.popup form{
+    min-width: 150px;
+    width: 90vw;
+    max-width: 600px;
+   
+    min-height: 150px;
+    max-height: 700px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+
+    padding: 0.5em;
+
+    overflow: scroll;
+
+    font-size: 0.8em;
+}
+
+@media(min-width: 1024px){
+    .popup form{
+        font-size: 1em;
+    }
+}
+
+
+.popup .regular-button{
+    width: 90%;
+    margin-bottom: 1em;
+    font-size: 1em;
+}
+
+
+
+/* regular input */
+.regular-input{
+    border: none;
+    outline: none;
+    border-bottom: 1px solid var(--blue-400);
+    color: var(--blue-700);
+
+    padding: 0.5em;
+
+    background: transparent;
+
+    font-size: 1.1em;
+}
+
+.regular-input::placeholder{
+    color: var(--blue-300);
+    font-weight: bold;
+}
+
+
+/* regular button */
+.regular-button{
+    border: 1px solid transparent;
+
+    background: var(--blue-800);
+    color: var(--blue-200);
+    font-size: 1.1em;
+
+    padding: 1em;
+
+    width: 100%;
+
+    cursor: pointer;
+
+    border-radius: 10px;
+
+    font-weight: bold;
+}
+
+.regular-button:hover{
+    border-color: var(--blue-800);
+    color: var(--blue-800);
+    background: transparent;
+}
+
+.regular-button.inactive{
+    display: none;
+}
+
+.regular-button.red{
+    background: var(--red-400);
+    color: var(--blue-200);
+}
+
+.regular-button.red:hover{
+    border-color: var(--red-400);
+    color: var(--red-400);
+    background: transparent;
+}
+
 /* ANIMATIONS */
+.fade-in{
+    animation: fade-in var(--time) linear forwards;
+}
+@keyframes fade-in{
+    from{
+        opacity: 0;
+    }
+    to{
+        opacity: 1;
+    }
+}
+
+.fade-out{
+    animation: fade-out var(--time) linear forwards;
+}
+@keyframes fade-out{
+    from{
+        opacity: 1;
+    }
+    to{
+        opacity: 0;
+    }
+}
+
+
 .suspended-menu{
     animation: suspended-menu-fade var(--time) ease-in-out forwards;
 }
@@ -437,7 +630,7 @@ body.dark-mode{
 
 /* MEDIA QUERIES */
 @media(min-width: 1024px){
-    body{
+    .container{
         padding: 1em;
     }
 }
@@ -468,6 +661,7 @@ body.dark-mode{
     }
 }
 
+    
 /*
 :root{
     --primary-clr           : #74512C;
