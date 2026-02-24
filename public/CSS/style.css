@@ -72,7 +72,7 @@ a{
 }
 
 svg{
-    width: 30px;
+    width: 25px;
     color: var(--blue-800);
 }
 
@@ -168,11 +168,11 @@ header .title-text{
 }
 
 header .title-text h1{
-    font-size: 1.6em;
+    font-size: 1.4em;
     font-family: var(--serif);
 }   
 header .title-text p{
-    font-size: 0.9em;
+    font-size: 0.75em;
     color: var(--blue-700);
 }
 
@@ -185,12 +185,16 @@ header nav{
 
 /* SUSPENDED NAV */
 .suspended-menu{
-    position: fixed;
+    position: sticky;
+    bottom: 1em;
     padding: 0.5em;
 
     display: flex;
     align-items: center;
     gap: 1em;
+
+    width: fit-content;
+    margin: 0 auto;
 
     background: var(--white);
     box-shadow: 0px 4px 10px var(--blue-300);
@@ -198,9 +202,19 @@ header nav{
     border-radius: 50px;
     z-index: 0;
 
-    --btn-width: 125px;
+    --btn-width: 85px;
     --gap: 1em;
+    --btn-hight: 60px;
 }
+
+@media(min-width: 1024px){
+    .suspended-menu{
+        --btn-width: 115px;
+        --gap: 1em;
+        --btn-hight: 65px;
+    }
+}
+
 
 .suspended-menu .selected-bg{
     position: absolute;
@@ -213,7 +227,7 @@ header nav{
 .suspended-menu .icon-bg{
     padding: 0.5em;
     width: var(--btn-width);
-    height: 70px;
+    height: var(--btn-hight);
     border-radius: 50px;
 }
 
@@ -250,7 +264,7 @@ main{
     background: var(--white);
     padding: 1em;
 
-    overflow: scroll;
+    overflow: auto;
 
     z-index: 0;
 }
@@ -289,11 +303,11 @@ main{
     padding-left: 1em;
 }
 .task .task-text h1{
-    font-size: 1.4em;
+    font-size: 1.2em;
     font-weight: normal;
 }
 .task .task-text p{
-    font-size: 0.9em;
+    font-size: 0.75em;
     color: var(--blue-600);
 }
 
@@ -319,17 +333,12 @@ main{
 @keyframes suspended-menu-fade{
     from{
         opacity: 0;
-        top: 90%;
-        right: 50%;
-
-        transform: translate(50%, 15%);
+        transform: translateY(15px);
     }
     to{
         opacity: 1;
-        top: 90%;
-        right: 50%;
+        transform: translateY(0);
 
-        transform: translate(50%, 0);
     }
 }
 
@@ -445,6 +454,17 @@ body.dark-mode{
     header nav{
         justify-content: initial;
         gap: 1em;
+    }
+
+    header .title-text h1{
+        font-size: 1.5em;
+    }  
+    header .title-text p{
+        font-size: 0.9em;
+    }
+
+    .task .task-text p{
+        font-size: 0.9em;
     }
 }
 
