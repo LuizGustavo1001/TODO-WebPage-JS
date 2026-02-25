@@ -3,6 +3,7 @@ const body = document.body
 const suspMenuIcon  = document.querySelectorAll(".suspended-menu .icon-bg")
 const suspMenuBg    = document.querySelector(".suspended-menu .selected-bg")
 
+// icons
 const xIcon = `
     <svg class="close-icon" onclick="closePopUp()" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="x-icon">
         <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="currentColor"/>
@@ -37,12 +38,12 @@ const emptySquare = `
 `
 
 const fullSquare = `
-    svg class="full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class="full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" clip-rule="evenodd" d="M2 4.5C2 3.11929 3.11929 2 4.5 2H19.5C20.8807 2 22 3.11929 22 4.5V19.5C22 20.8807 20.8807 22 19.5 22H4.5C3.11929 22 2 20.8807 2 19.5V4.5ZM18.787 9.57537C19.1767 9.18401 19.1753 8.55084 18.784 8.16116L18.0753 7.45558C17.684 7.0659 17.0508 7.06726 16.6611 7.45863L10.8895 13.2551L7.56845 9.98027C7.1752 9.59249 6.54205 9.59692 6.15427 9.99018L5.45213 10.7022C5.06436 11.0955 5.06879 11.7286 5.46204 12.1164L10.2003 16.7888C10.5922 17.1752 11.2228 17.1723 11.6111 16.7823L18.787 9.57537Z" fill="currentColor"/>
     </svg>
 `
 
-/* TOGGLE THEME (dark mode) */
+// TOGGLE THEME (dark mode)
 const toggleThemeIcon = document.querySelector(".toggle-theme")
 toggleThemeIcon.addEventListener("click", toggleTheme)
 
@@ -57,66 +58,13 @@ function toggleTheme(){
     icons.forEach(icon => {icon.classList.toggle("inactive")})
 }
 
-
-/* LOCAL STORAGE */
+// Theme (local storage)
 const lastTheme = localStorage.getItem("theme") || "light"
 if(lastTheme == "dark"){toggleTheme()}
 
 
-let currentPage = localStorage.getItem("lastPage") || "1"
-togglePage(currentPage);
-suspMenuBg.dataset.id = currentPage;
 
-suspMenuIcon.forEach(icon =>{
-    icon.addEventListener("click", () => {
-        const id = icon.dataset.id
-        currentPage = id
-        togglePage(id)
-
-        localStorage.setItem("lastPage", id)
-        suspMenuBg.dataset.id = id
-    })
-
-    icon.addEventListener("mouseover", () => {
-        suspMenuBg.dataset.id = icon.dataset.id
-    })
-
-    icon.addEventListener("mouseleave", () => {
-        suspMenuBg.dataset.id = currentPage
-    })
-})
-
-
-function togglePage(index){
-    const headerTitle   = document.querySelector("header .title")
-    const headerIcon    = headerTitle.querySelector(".icon")
-    const headerText    = headerTitle.querySelector(".title-text")
-
-    const addTasksIcon = document.querySelector(".add-tasks")
-
-    switch(index){
-        case "1":
-            headerIcon.innerHTML = nfTaskIcon
-            headerText.innerHTML = `
-                <h1>Not Finished Tasks</h1>
-                <p>Click on a task to edit. Click on the + button to add tasks.</p>
-            `
-            addTasksIcon.classList.remove("inactive")
-            break;
-        default:
-            headerIcon.innerHTML = fTaskIcon
-            headerText.innerHTML = `
-                <h1> Finished Tasks</h1>
-                <p>Click on a task to edit. Click on the + button to add tasks.</p>
-            `
-            addTasksIcon.classList.add("inactive")
-
-            break;
-    }
-}
-
-
-
+// POPUP functions
 function closePopUp(){
     const closeIcon = document.querySelectorAll(".close-icon")
     closeIcon.forEach(icon => {
@@ -136,8 +84,6 @@ function closePopUp(){
     Title: "Comprar pão",
     Description: "Passar na padaria depois do trabalho"
 })
-
-
 */
 
 function fillPopUp(type, values = null){
@@ -146,7 +92,7 @@ function fillPopUp(type, values = null){
 
     const popupTitle    = popup.querySelector(".title")
     const popupForm     = popup.querySelector("form")
-    const submitBtn   = popup.querySelector(".submit")
+    const submitBtn     = popup.querySelector(".submit")
     const removeTaskBtn = popup.querySelector(".remove-task")
 
     popupBg.classList.add("active")
@@ -163,7 +109,7 @@ function fillPopUp(type, values = null){
             `
             submitBtn.innerHTML = `Add`
             removeTaskBtn.classList.add("inactive")
-            break;
+            break
         case "edit":
             popupTitle.innerHTML = `<h1>Modify Task</h1> ${xIcon}`
 
@@ -172,19 +118,185 @@ function fillPopUp(type, values = null){
                     popupForm.innerHTML += `<input class="regular-input" type="text" name="${value}" id="i${value}" placeholder="${key}" value="${value}">`
                 }
             }
-
+            removeTaskBtn.classList.remove("inactive")
             submitBtn.innerHTML = `Save Changes`
-            break;
+            break
     }
 }
 
+fetch("/tasks")
+    .then(res => res.json())
+    .then(data => {
+        const time = new Date()
+        const day   = String(time.getDate()).padStart(2, "0")
+        const month = String(time.getMonth() + 1).padStart(2, "0")
+        const year  = time.getFullYear()
 
-function openPopup(type){
-    alert(type)
-}
+        const date    = `${year}-${month}-${day}`
+        const altDate = `${year}/${month}/${day}`
 
+        // tasks from json file will be stored here
+        var tasksList = []
 
+        data.tasks.forEach(task => {
+            tasksList.push({
+                id: task.id,
+                title: task.title,
+                desc: task.desc,
+                date: task.date,
+                altDate: task.altDate.Date,
+                endDate: task.dateFinish,
+                altEndDate: task.altDateFinish,
+                status: task.status
+            })
+        })
 
+        var lastTaskId = tasksList[(tasksList.length) - 1].id
+
+        let currentPage = localStorage.getItem("lastPage") || "1"
+        togglePage(currentPage)
+        suspMenuBg.dataset.id = currentPage
+
+        suspMenuIcon.forEach(icon =>{
+            icon.addEventListener("click", () => {
+                const id = icon.dataset.id
+                currentPage = id
+                togglePage(id)
+
+                localStorage.setItem("lastPage", id)
+                suspMenuBg.dataset.id = id
+            })
+
+            icon.addEventListener("mouseover", () => {
+                suspMenuBg.dataset.id = icon.dataset.id
+            })
+
+            icon.addEventListener("mouseleave", () => {
+                suspMenuBg.dataset.id = currentPage
+            })
+        })
+
+        // toggle between not finished and finished tasks
+        function togglePage(index){
+            const headerTitle   = document.querySelector("header .title")
+            const headerIcon    = headerTitle.querySelector(".icon")
+            const headerText    = headerTitle.querySelector(".title-text")
+
+            const addTasksIcon = document.querySelector(".add-tasks")
+
+            switch(index){
+                case "1":
+                    headerIcon.innerHTML = nfTaskIcon
+                    headerText.innerHTML = `
+                        <h1>Not Finished Tasks</h1>
+                        <p>Click on a task to edit. Click on the + button to add tasks.</p>
+                    `
+                    addTasksIcon.classList.remove("inactive")
+
+                    displayTasks("1")
+                    break
+                default:
+                    headerIcon.innerHTML = fTaskIcon
+                    headerText.innerHTML = `
+                        <h1> Finished Tasks</h1>
+                        <p>Click on a task to edit. Click on the + button to add tasks.</p>
+                    `
+                    addTasksIcon.classList.add("inactive")
+
+                    displayTasks("2")
+                    break
+            }
+        }
+
+        async function displayTasks(type) {
+            // clear main content
+            const main = document.querySelector("main")
+            main.innerHTML = ""
+            
+            switch(type){
+                case "1":
+                    tasksList.forEach(task => {
+                        if(task.status == "pending"){
+                            const container = document.createElement("div")
+                            container.classList.add("task")
+                            container.dataset.id = "nft"
+
+                            const icon = document.createElement("span")
+                            icon.classList.add("task-icon", "icon-bg")
+
+                            const text = document.createElement("span")
+                            text.classList.add("task-text")
+
+                            const h1 = document.createElement("h1")
+                            const desc = document.createElement("span")
+                            const p = document.createElement("p")
+                            const date = document.createElement("p")
+
+                            icon.innerHTML += `${emptySquare} ${fullSquare}`
+
+                            p.innerHTML += `${task.desc}`
+                            desc.insertAdjacentElement("afterbegin", p)
+                            desc.insertAdjacentElement("beforeend", date)
+
+                            h1.innerHTML += `${task.title}`
+
+                            text.insertAdjacentElement("afterbegin", h1)
+                            text.insertAdjacentElement("beforeend", desc)
+
+                            container.insertAdjacentElement("afterbegin", icon)
+                            container.insertAdjacentElement("beforeend", text)
+
+                            main.insertAdjacentElement("afterbegin", container)
+                        }
+                    })
+                    break
+                case "2":
+                    tasksList.forEach(task => {
+                        if(task.status == "finished"){
+                            const container = document.createElement("div")
+                            container.classList.add("task")
+                            container.dataset.id = "ft"
+
+                            const icon = document.createElement("span")
+                            icon.classList.add("task-icon", "icon-bg")
+
+                            const text = document.createElement("span")
+                            text.classList.add("task-text")
+
+                            const h1 = document.createElement("h1")
+                            const desc = document.createElement("span")
+                            const p = document.createElement("p")
+                            const date = document.createElement("p")
+
+                            icon.innerHTML += `${emptySquare} ${fullSquare}`
+
+                            p.innerHTML += `${task.desc}`
+                            date.innerHTML += `Add date: <strong>${task.altEndDate}</strong>`
+                            desc.insertAdjacentElement("afterbegin", p)
+                            desc.insertAdjacentElement("beforeend", date)
+
+                            h1.innerHTML += `${task.title}`
+
+                            text.insertAdjacentElement("afterbegin", h1)
+                            text.insertAdjacentElement("beforeend", desc)
+
+                            container.insertAdjacentElement("afterbegin", icon)
+                            container.insertAdjacentElement("beforeend", text)
+
+                            main.insertAdjacentElement("afterbegin", container)
+                        }
+                    })
+            }
+
+            const tasks = document.querySelectorAll("main .task")
+            tasks.forEach(task => {
+                task.addEventListener("click", () => {
+                    fillPopUp('edit', {Title: 'Comprar pão', Description: 'Passar na padaria depois do trabalho'})
+                })
+            })
+
+        }
+    })
 
 /*
 fetch("/tasks")
