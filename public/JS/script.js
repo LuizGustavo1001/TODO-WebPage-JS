@@ -1,9 +1,31 @@
 const body = document.body
 
+const popupBg       = document.querySelector(".popup-bg")
+const popup         = popupBg.querySelector(".popup")
+
 const suspMenuIcon  = document.querySelectorAll(".suspended-menu .icon-bg")
 const suspMenuBg    = document.querySelector(".suspended-menu .selected-bg")
 
 // icons
+const sadFace = `
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 17C9.85038 16.3697 10.8846 16 12 16C13.1154 16 14.1496 16.3697 15 17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <ellipse cx="15" cy="10.5" rx="1" ry="1.5" fill="currentColor"/>
+            <ellipse cx="9" cy="10.5" rx="1" ry="1.5" fill="currentColor"/>
+        <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+`
+
+const smile = `
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M9 16C9.85038 16.6303 10.8846 17 12 17C13.1154 17 14.1496 16.6303 15 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M16 10.5C16 11.3284 15.5523 12 15 12C14.4477 12 14 11.3284 14 10.5C14 9.67157 14.4477 9 15 9C15.5523 9 16 9.67157 16 10.5Z" fill="currentColor"/>
+            <ellipse cx="9" cy="10.5" rx="1" ry="1.5" fill="currentColor"/>
+        <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+`
+
+
 const xIcon = `
     <svg class="close-icon" onclick="closePopUp()" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="x-icon">
         <path d="M20.7457 3.32851C20.3552 2.93798 19.722 2.93798 19.3315 3.32851L12.0371 10.6229L4.74275 3.32851C4.35223 2.93798 3.71906 2.93798 3.32854 3.32851C2.93801 3.71903 2.93801 4.3522 3.32854 4.74272L10.6229 12.0371L3.32856 19.3314C2.93803 19.722 2.93803 20.3551 3.32856 20.7457C3.71908 21.1362 4.35225 21.1362 4.74277 20.7457L12.0371 13.4513L19.3315 20.7457C19.722 21.1362 20.3552 21.1362 20.7457 20.7457C21.1362 20.3551 21.1362 19.722 20.7457 19.3315L13.4513 12.0371L20.7457 4.74272C21.1362 4.3522 21.1362 3.71903 20.7457 3.32851Z" fill="currentColor"/>
@@ -80,49 +102,50 @@ function closePopUp(){
     })
 }
 
-/*fillPopUp("edit", {
-    Title: "Comprar pão",
-    Description: "Passar na padaria depois do trabalho"
-})
-*/
+const warning = document.querySelector(".warning")
 
-function fillPopUp(type, values = null){
-    const popupBg       = document.querySelector(".popup-bg")
-    const popup         = popupBg.querySelector(".popup")
+function closeWarning(){
+    warning.classList.add("fade-out")
 
-    const popupTitle    = popup.querySelector(".title")
-    const popupForm     = popup.querySelector("form")
-    const submitBtn     = popup.querySelector(".submit")
-    const removeTaskBtn = popup.querySelector(".remove-task")
+    setTimeout(() => {
+        warning.classList.add("inactive")
+        warning.classList.remove("fade-out")
+        warning.innerHTML = ""
+    }, 500)
+}
 
-    popupBg.classList.add("active")
+function fillWarning(type, message){
+    const warningText = document.createElement("p")
+    let warningIcon = smile
 
-    // clear form
-    popupForm.innerHTML = ""
-    
     switch(type){
-        case "add": 
-            popupTitle.innerHTML = `<h1>Add Task</h1> ${xIcon}`
-            popupForm.innerHTML = `
-                <input class="regular-input" type="text" name="title" id="ititle" placeholder="Title here">
-                <input class="regular-input" type="text" name="desc" id="idesc" placeholder="Description here (150 characters)">
-            `
-            submitBtn.innerHTML = `Add`
-            removeTaskBtn.classList.add("inactive")
-            break
-        case "edit":
-            popupTitle.innerHTML = `<h1>Modify Task</h1> ${xIcon}`
-
-            if(values != null){
-                for (const [key, value] of Object.entries(values)){
-                    popupForm.innerHTML += `<input class="regular-input" type="text" name="${value}" id="i${value}" placeholder="${key}" value="${value}">`
-                }
+        case "error": 
+            warningIcon = sadFace
+            warningText.innerHTML += `Error: `
+            if(message == "emptyInput"){
+                warningText.innerHTML += `Some empty inputs detected while trying to add new tasks. `
+            }else{
+                warningText.innerHTML += `Server Error. `
             }
-            removeTaskBtn.classList.remove("inactive")
-            submitBtn.innerHTML = `Save Changes`
+            break
+        default:   
+            if(message == "newTask"){
+                warningText.innerHTML += `New Task add successfully to the database! `
+            }else{
+                warningText.innerHTML += `Server Error. `
+            }
             break
     }
+
+    warningText.innerHTML += `<em>Click here to close this warning</em>.`
+    warning.innerHTML += warningIcon
+    warning.insertAdjacentElement("beforeend", warningText)
+
+    warning.classList.remove("inactive")
+    setTimeout(() => {closeWarning()}, 10000)
 }
+
+
 
 fetch("/tasks")
     .then(res => res.json())
@@ -151,7 +174,11 @@ fetch("/tasks")
             })
         })
 
+        var taskAmount = tasksList.length
         var lastTaskId = tasksList[(tasksList.length) - 1].id
+
+        const addTasksIcon = document.querySelector(".add-tasks")
+        addTasksIcon.addEventListener("click", () => {fillPopUp('add')})
 
         let currentPage = localStorage.getItem("lastPage") || "1"
         togglePage(currentPage)
@@ -182,7 +209,7 @@ fetch("/tasks")
             const headerIcon    = headerTitle.querySelector(".icon")
             const headerText    = headerTitle.querySelector(".title-text")
 
-            const addTasksIcon = document.querySelector(".add-tasks")
+            
 
             switch(index){
                 case "1":
@@ -208,6 +235,85 @@ fetch("/tasks")
             }
         }
 
+        async function fillPopUp(type, id, values = null){
+            // clear popup content
+            popup.innerHTML = ""
+
+            const title = document.createElement("div")
+            title.classList.add("title")
+
+            const form = document.createElement("form")
+            form.setAttribute("method", "POST")
+
+            const submitBtn = document.createElement("button")
+            submitBtn.setAttribute("type", "submit")
+            submitBtn.classList.add("regular-button", "submitBtn")
+            submitBtn.dataset.id = id
+
+            const titleH1 = document.createElement("h1")
+            const titleIcon = xIcon
+
+            const removeBtn = document.createElement("button")
+            removeBtn.classList.add("remove-task", "regular-button", "red")
+            removeBtn.innerHTML += "Remove task"
+
+            switch(type){
+                case "add":
+                    titleH1.innerHTML += `Add Task`
+
+                    const titleInput = document.createElement("input")
+                    titleInput.setAttribute("type", "text")
+                    titleInput.setAttribute("name", "title")
+                    titleInput.setAttribute("id", "ititle")
+                    titleInput.setAttribute("placeholder", "Title here")
+                    titleInput.classList.add("regular-input")
+
+                    const descInput = document.createElement("input")
+                    descInput.setAttribute("type", "text")
+                    descInput.setAttribute("name", "desc")
+                    descInput.setAttribute("id", "idesc")
+                    descInput.setAttribute("placeholder", "Description here(optional)")
+                    descInput.classList.add("regular-input")
+
+                    form.insertAdjacentElement("beforeend", titleInput)
+                    form.insertAdjacentElement("beforeend", descInput)
+
+                    submitBtn.innerHTML = `Add`
+                    submitBtn.addEventListener("click", checkForm)
+                    break
+                case "edit":
+                    titleH1.innerHTML += "Modify Task"
+
+                    if(values != null){
+                        for (const [key, value] of Object.entries(values)){
+                            const input = document.createElement("input")
+                            input.setAttribute("type", "text")
+                            input.setAttribute("name", `${key}`)
+                            input.setAttribute("id", `i${key}`)
+                            input.setAttribute("placeholder", `${key}`)
+                            input.setAttribute("value", `${value}`)
+                            input.classList.add("regular-input")
+                            
+                            form.insertAdjacentElement("beforeend", input)
+                        }
+                    }
+                    submitBtn.innerHTML = `Save Changes`
+                    break
+            }
+
+            title.insertAdjacentElement("afterbegin", titleH1)
+            title.innerHTML += titleIcon
+
+            popup.insertAdjacentElement("beforeend", title)
+            popup.insertAdjacentElement("beforeend", form)
+            popup.insertAdjacentElement("beforeend", submitBtn)
+            if(type == "edit"){
+                popup.insertAdjacentElement("beforeend", removeBtn)
+            }
+            
+            popupBg.classList.add("active")
+        }
+
         async function displayTasks(type) {
             // clear main content
             const main = document.querySelector("main")
@@ -217,32 +323,28 @@ fetch("/tasks")
                 case "1":
                     tasksList.forEach(task => {
                         if(task.status == "pending"){
-                            const container = document.createElement("div")
-                            container.classList.add("task")
-                            container.dataset.id = "nft"
-
                             const icon = document.createElement("span")
                             icon.classList.add("task-icon", "icon-bg")
+                            icon.innerHTML += `${emptySquare} ${fullSquare}`
+
+                            const h1 = document.createElement("h1")
+                            h1.innerHTML += `${task.title}`
+
+                            const p = document.createElement("p")
+                            p.classList.add("desc-text")
+                            p.innerHTML += `${task.desc}`
+
+                            const desc = document.createElement("span")
+                            desc.insertAdjacentElement("afterbegin", p)
 
                             const text = document.createElement("span")
                             text.classList.add("task-text")
-
-                            const h1 = document.createElement("h1")
-                            const desc = document.createElement("span")
-                            const p = document.createElement("p")
-                            const date = document.createElement("p")
-
-                            icon.innerHTML += `${emptySquare} ${fullSquare}`
-
-                            p.innerHTML += `${task.desc}`
-                            desc.insertAdjacentElement("afterbegin", p)
-                            desc.insertAdjacentElement("beforeend", date)
-
-                            h1.innerHTML += `${task.title}`
-
                             text.insertAdjacentElement("afterbegin", h1)
                             text.insertAdjacentElement("beforeend", desc)
 
+                            const container = document.createElement("div")
+                            container.classList.add("task")
+                            container.dataset.id = task.id
                             container.insertAdjacentElement("afterbegin", icon)
                             container.insertAdjacentElement("beforeend", text)
 
@@ -253,33 +355,32 @@ fetch("/tasks")
                 case "2":
                     tasksList.forEach(task => {
                         if(task.status == "finished"){
-                            const container = document.createElement("div")
-                            container.classList.add("task")
-                            container.dataset.id = "ft"
-
                             const icon = document.createElement("span")
                             icon.classList.add("task-icon", "icon-bg")
-
-                            const text = document.createElement("span")
-                            text.classList.add("task-text")
+                            icon.innerHTML += `${fullSquare} ${emptySquare}`
 
                             const h1 = document.createElement("h1")
-                            const desc = document.createElement("span")
+                            h1.innerHTML += `${task.title}`
+
                             const p = document.createElement("p")
-                            const date = document.createElement("p")
-
-                            icon.innerHTML += `${emptySquare} ${fullSquare}`
-
+                            p.classList.add("desc-text")
                             p.innerHTML += `${task.desc}`
-                            date.innerHTML += `Add date: <strong>${task.altEndDate}</strong>`
+
+                            const date = document.createElement("p")
+                            date.innerHTML += `<em>Add date: <strong>${task.altEndDate}</strong></em>`
+
+                            const desc = document.createElement("span")
                             desc.insertAdjacentElement("afterbegin", p)
                             desc.insertAdjacentElement("beforeend", date)
 
-                            h1.innerHTML += `${task.title}`
-
+                            const text = document.createElement("span")
+                            text.classList.add("task-text")
                             text.insertAdjacentElement("afterbegin", h1)
                             text.insertAdjacentElement("beforeend", desc)
 
+                            const container = document.createElement("div")
+                            container.classList.add("task")
+                            container.dataset.id = task.id
                             container.insertAdjacentElement("afterbegin", icon)
                             container.insertAdjacentElement("beforeend", text)
 
@@ -288,14 +389,54 @@ fetch("/tasks")
                     })
             }
 
+            // task eventListener when click
             const tasks = document.querySelectorAll("main .task")
             tasks.forEach(task => {
                 task.addEventListener("click", () => {
-                    fillPopUp('edit', {Title: 'Comprar pão', Description: 'Passar na padaria depois do trabalho'})
+                    const taskTitle = task.querySelector("h1")
+                    const taskDesc = task.querySelector(".desc-text")
+
+                    fillPopUp('edit', task.dataset.id,{
+                        Title: taskTitle.innerHTML,
+                        Description: taskDesc.innerHTML
+                    })
                 })
             })
 
         }
+
+        // Prevent form submit button default event
+        const submitBtns = document.querySelectorAll(".submitBtn")
+        submitBtns.forEach(btn => {
+            btn.addEventListener("click", function(event){
+                event.preventDefault()
+            })
+        })
+
+        
+
+        async function checkForm(){g
+            const taskTitle = document.getElementsByName("title")[0]
+            const taskDesc = document.getElementsByName("desc")[0]
+            
+            if(taskTitle.value.length == 0){
+               fillWarning("error", "emptyInput")
+            }else{
+                alert(`Título: ${taskTitle.value} \nDescrição: ${taskDesc.value}`)
+            }
+
+    
+        }
+
+        async function addTask(data){
+
+        }
+
+
+
+        
+
+
     })
 
 /*

@@ -12,6 +12,8 @@
 </head>
 
 <body>
+    <div class="warning right-fade-in inactive" style="--time: 0.5s" onclick="closeWarning()"></div>
+
     <div class="popup-bg fade-in" style="--time:0.3s">
         <div class="popup">
             <div class="title">
@@ -23,7 +25,7 @@
 
             <form method="POST" aria-label="popup form"></form>
 
-            <button type="submit" class="regular-button submit"></button>
+            <button type="submit" class="regular-button submitBtn"></button>
             <button class="remove-task regular-button red">Remove Task</button>
         </div>
     </div>
@@ -38,7 +40,7 @@
                 </div>
             </div>
             <nav>
-                <abbr title="Add new task" class="add-tasks" onclick="fillPopUp('add')">
+                <abbr title="Add new task" class="add-tasks">
                     <button class="icon-button icon-bg">
                         <svg  viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-label="plus-icon">
                             <path fill="currentColor" fill-rule="evenodd" d="M9 17a1 1 0 102 0v-6h6a1 1 0 100-2h-6V3a1 1 0 10-2 0v6H3a1 1 0 000 2h6v6z"/>
@@ -70,7 +72,9 @@
                 </button>
             </nav>
         </header>
+
         <main class="bottom-fade flex-column" style="--time: 0.5s" aria-label="tasks container"></main>
+
         <nav class="suspended-menu" style="--time: 1s">
             <div class="selected-bg" style="--time: 0.3s"></div>
             <button class="icon-bg selected" data-id="1">

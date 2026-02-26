@@ -45,6 +45,6 @@ app.post("/update-file", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server Online`)
-    console.log(`listening at http://localhost:${PORT}`)
+    console.log(`Server Online!`)
+    console.log(`Listening at http://localhost:${PORT}`)
 });

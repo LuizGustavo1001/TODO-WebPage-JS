@@ -52,12 +52,14 @@ body{
 
 header{
     min-height: auto;
+    z-index: 1;
 }
 main{
     flex: 1;
     margin-block: 1.5em;
 
     gap: 1.5em;
+    z-index: 0;
 }
 footer{
     display: flex;
@@ -163,7 +165,7 @@ svg{
 
     background: rgba(0, 0, 0, 0.27);
 
-    z-index: 1;
+    z-index: 3;
 }
 .popup-bg.active{
     display: flex;
@@ -229,11 +231,68 @@ svg{
 }
 
 .popup .regular-button{
-    width: 90%;
+    width: calc(100% - 3em);
     margin-bottom: 1em;
     font-size: 1em;
 }
 
+/* warning */
+.warning{
+    position: absolute;
+    top: 1.5em;
+    right: 1em;
+
+    padding: 1em 0.5em;
+    min-width: 200px;
+    width: 80vw;
+    max-width: 600px;
+
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: center;
+    gap: 0.5em;
+
+    font-size: 0.85em;
+
+    z-index: 4;
+
+    background: rgba(230, 173, 173, 0.527);
+    border-left: 3px solid rgb(158, 72, 72);
+
+    cursor: pointer;
+}
+.warning.inactive{
+    display: none;
+}
+
+.warning,
+.warning svg{
+    color: rgb(158, 72, 72);
+}
+
+.warning.success{
+    background: rgba(173, 216, 230, 0.527);
+    border-color: rgb(72, 136, 158);;
+}
+.warning.success,
+.warning.success svg{
+    color: rgb(72, 136, 158);
+}
+
+.right-fade-in{
+    animation: right-fade-in var(--time) linear forwards;
+}
+@keyframes right-fade-in {
+    from{
+        opacity: 0;
+        transform: translateX(1em);
+    }
+
+    to{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
 
 /* regular input */
 .regular-input{
@@ -693,6 +752,7 @@ body.dark-mode{
     /* popup */
     .popup form{
         font-size: 1em;
+        padding: 1em 2em;
     }
 }
 
