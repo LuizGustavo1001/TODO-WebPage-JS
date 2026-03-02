@@ -1,4 +1,6 @@
-const body = document.body
+const body          = document.body
+
+const warning       = document.querySelector(".warning")
 
 const popupBg       = document.querySelector(".popup-bg")
 const popup         = popupBg.querySelector(".popup")
@@ -16,7 +18,7 @@ const sadFace = `
     </svg>
 `
 
-const smile = `
+const smileFace = `
     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M9 16C9.85038 16.6303 10.8846 17 12 17C13.1154 17 14.1496 16.6303 15 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             <path d="M16 10.5C16 11.3284 15.5523 12 15 12C14.4477 12 14 11.3284 14 10.5C14 9.67157 14.4477 9 15 9C15.5523 9 16 9.67157 16 10.5Z" fill="currentColor"/>
@@ -24,7 +26,6 @@ const smile = `
         <path d="M7 3.33782C8.47087 2.48697 10.1786 2 12 2C17.5228 2 22 6.47715 22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 10.1786 2.48697 8.47087 3.33782 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
     </svg>
 `
-
 
 const xIcon = `
     <svg class="close-icon" onclick="closePopUp()" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="x-icon">
@@ -102,8 +103,8 @@ function closePopUp(){
     })
 }
 
-const warning = document.querySelector(".warning")
 
+// Warning functions
 function closeWarning(){
     warning.classList.add("fade-out")
 
@@ -115,8 +116,8 @@ function closeWarning(){
 }
 
 function fillWarning(type, message){
-    const warningText = document.createElement("p")
-    let warningIcon = smile
+    const warningText   = document.createElement("p")
+    let warningIcon     = smileFace
 
     switch(type){
         case "error": 
@@ -144,7 +145,6 @@ function fillWarning(type, message){
     warning.classList.remove("inactive")
     setTimeout(() => {closeWarning()}, 10000)
 }
-
 
 
 fetch("/tasks")
@@ -186,7 +186,7 @@ fetch("/tasks")
 
         suspMenuIcon.forEach(icon =>{
             icon.addEventListener("click", () => {
-                const id = icon.dataset.id
+                const id    = icon.dataset.id
                 currentPage = id
                 togglePage(id)
 
@@ -209,8 +209,6 @@ fetch("/tasks")
             const headerIcon    = headerTitle.querySelector(".icon")
             const headerText    = headerTitle.querySelector(".title-text")
 
-            
-
             switch(index){
                 case "1":
                     headerIcon.innerHTML = nfTaskIcon
@@ -225,8 +223,8 @@ fetch("/tasks")
                 default:
                     headerIcon.innerHTML = fTaskIcon
                     headerText.innerHTML = `
-                        <h1> Finished Tasks</h1>
-                        <p>Click on a task to edit. Click on the + button to add tasks.</p>
+                        <h1>Finished Tasks</h1>
+                        <p>Click on a task to edit.</p>
                     `
                     addTasksIcon.classList.add("inactive")
 
@@ -415,7 +413,7 @@ fetch("/tasks")
 
         
 
-        async function checkForm(){g
+        async function checkForm(){
             const taskTitle = document.getElementsByName("title")[0]
             const taskDesc = document.getElementsByName("desc")[0]
             
