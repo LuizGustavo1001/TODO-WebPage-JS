@@ -131,7 +131,7 @@ function fillWarning(type, message){
             break
         default:   
             if(message == "newTask"){
-                warningText.innerHTML += `New Task add successfully to the database! `
+                warningText.innerHTML += `New Task add successfully to the database `
             }else{
                 warningText.innerHTML += `Server Error. `
             }

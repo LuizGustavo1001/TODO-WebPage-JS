@@ -256,23 +256,22 @@ svg{
 
     z-index: 4;
 
-    background: rgba(230, 173, 173, 0.527);
-    border-left: 3px solid rgb(158, 72, 72);
+    background: #e6adad86;
+    border-left: 3px solid #9e4848;
 
     cursor: pointer;
+}
+.warning,
+.warning svg{
+    color: #9e4848;
 }
 .warning.inactive{
     display: none;
 }
 
-.warning,
-.warning svg{
-    color: rgb(158, 72, 72);
-}
-
 .warning.success{
-    background: rgba(173, 216, 230, 0.527);
-    border-color: rgb(72, 136, 158);
+    background: #add8e686;
+    border-color: #48889e;
 }
 .warning.success,
 .warning.success svg{
@@ -715,21 +714,21 @@ body.dark-mode{
 
 /* warning */
 .dark-mode .warning{
-    background: rgba(214, 112, 112, 0.661);
-    border-left: 3px solid rgb(238, 189, 189);
+    background: #d67070a9;
+    border-color: #eebdbd;
 }
 .dark-mode .warning,
 .dark-mode .warning svg{
-    color: rgb(238, 189, 189);
+    color: #eebdbd;
 }
 
 .dark-mode .warning.success{
-    background: rgba(133, 200, 222, 0.677);
-    border-color: rgb(136, 187, 205);
+    background: #85c8dead;
+    border-color: #BFE5F3;
 }
 .dark-mode .warning.success,
 .dark-mode .warning.success svg{
-    border-color: rgb(136, 187, 205);
+    color: #BFE5F3;
 }
 
 
