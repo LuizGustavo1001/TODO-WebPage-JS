@@ -397,7 +397,7 @@ fetch("/tasks")
                     console.error("error: Unknown selected sort type.")
                     break
             }
-            lastSort = String(filter)
+            //lastSort = String(filter)
             displayTasks(localStorage.getItem("lastPage") || "1")
         }
 
@@ -416,7 +416,6 @@ fetch("/tasks")
             tasksList[id].title = newData[0]
             tasksList[id].desc = newData[1]
 
-            console.log(lastSort)
             sortTasks(tasksList, lastSort)
             fillWarning("success", "modifySuccess")
             closePopUp()
