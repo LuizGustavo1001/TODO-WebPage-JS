@@ -105,17 +105,16 @@ function closePopUp(){
 
 
 // Warning functions
-function closeWarning(){
-    warning.classList.add("fade-out")
-
-    setTimeout(() => {
-        warning.classList.add("inactive")
-        warning.classList.remove("fade-out")
-        warning.innerHTML = ""
-    }, 500)
-}
-
 function fillWarning(type, message){
+    const item = document.createElement("div")
+    item.classList.add("item")
+    item.addEventListener("click", () => {
+        item.classList.add("fade-out")
+        setTimeout(() => {
+            item.remove()
+        }, 500)
+    })
+
     const warningText   = document.createElement("p")
     let warningIcon     = smileFace
 
@@ -130,9 +129,11 @@ function fillWarning(type, message){
             }
             break
         default:
-            warning.classList.add("success")
+            item.classList.add("success")
             if(message == "newTask"){
-                warningText.innerHTML += `New Task add successfully to the database `
+                warningText.innerHTML += `New Task add successfully to the database. `
+            }else if(message == "modifySuccess"){
+                warningText.innerHTML += `Task data modified with success. `
             }else{
                 warningText.innerHTML += `Server Error. `
             }
@@ -140,11 +141,18 @@ function fillWarning(type, message){
     }
 
     warningText.innerHTML += `<em>Click here to close this warning</em>.`
-    warning.innerHTML += warningIcon
-    warning.insertAdjacentElement("beforeend", warningText)
 
-    warning.classList.remove("inactive")
-    setTimeout(() => {closeWarning()}, 10000)
+    item.innerHTML += warningIcon
+    item.insertAdjacentElement("beforeend", warningText)
+    
+    warning.insertAdjacentElement("beforeend", item)
+    
+    setTimeout(() => {
+        item.classList.add("fade-out")
+        setTimeout(() => {
+            item.remove()
+        }, 500)
+    }, 10000)
 }
 
 
@@ -219,6 +227,203 @@ fetch("/tasks")
                 suspMenuBg.dataset.id = currentPage
             })
         })
+
+        async function displayTasks(type) {
+            // clear main content
+            const main = document.querySelector("main")
+            main.innerHTML = ""
+            
+            switch(type){
+                case "1":
+                    tasksList.forEach(task => {
+                        if(task.status == "pending"){
+                            const icon = document.createElement("span")
+                            icon.classList.add("task-icon", "icon-bg")
+                            icon.innerHTML += `${emptySquare} ${fullSquare}`
+
+                            const h1 = document.createElement("h1")
+                            h1.innerHTML += `${task.title}`
+
+                            const p = document.createElement("p")
+                            p.classList.add("desc-text")
+                            p.innerHTML += `${task.desc}`
+
+                            const date = document.createElement("p")
+                            date.innerHTML += `<em>Add at: <strong>${task.altDate}</strong></em>`
+
+                            const desc = document.createElement("span")
+                            desc.insertAdjacentElement("afterbegin", p)
+                            desc.insertAdjacentElement("beforeend", date)
+
+                            const text = document.createElement("span")
+                            text.classList.add("task-text")
+                            text.insertAdjacentElement("afterbegin", h1)
+                            text.insertAdjacentElement("beforeend", desc)
+
+                            const container = document.createElement("div")
+                            container.classList.add("task")
+                            container.dataset.id = task.id
+                            container.insertAdjacentElement("afterbegin", icon)
+                            container.insertAdjacentElement("beforeend", text)
+
+                            main.insertAdjacentElement("afterbegin", container)
+                        }
+                    })
+                    break
+                case "2":
+                    tasksList.forEach(task => {
+                        if(task.status == "finished"){
+                            const icon = document.createElement("span")
+                            icon.classList.add("task-icon", "icon-bg")
+                            icon.innerHTML += `${fullSquare} ${emptySquare}`
+
+                            const h1 = document.createElement("h1")
+                            h1.innerHTML += `${task.title}`
+
+                            const p = document.createElement("p")
+                            p.classList.add("desc-text")
+                            p.innerHTML += `${task.desc}`
+
+                            const date = document.createElement("p")
+                            date.innerHTML += `<em>Concluded at: <strong>${task.altEndDate}</strong></em>`
+
+                            const desc = document.createElement("span")
+                            desc.insertAdjacentElement("afterbegin", p)
+                            desc.insertAdjacentElement("beforeend", date)
+
+                            const text = document.createElement("span")
+                            text.classList.add("task-text")
+                            text.insertAdjacentElement("afterbegin", h1)
+                            text.insertAdjacentElement("beforeend", desc)
+
+                            const container = document.createElement("div")
+                            container.classList.add("task")
+                            container.dataset.id = task.id
+                            container.insertAdjacentElement("afterbegin", icon)
+                            container.insertAdjacentElement("beforeend", text)
+
+                            main.insertAdjacentElement("afterbegin", container)
+                        }
+                    })
+            }
+
+            // task eventListener when click
+            const tasks = document.querySelectorAll("main .task")
+            tasks.forEach(task => {
+                task.addEventListener("click", () => {
+                    const taskTitle = task.querySelector("h1")
+                    const taskDesc = task.querySelector(".desc-text")
+
+                    fillPopUp('edit', task.dataset.id,{
+                        Title: taskTitle.innerHTML,
+                        Description: taskDesc.innerHTML
+                    })
+                })
+            })
+        }
+
+        // Prevent form submit button default event
+        const submitBtns = document.querySelectorAll(".submitBtn")
+        submitBtns.forEach(btn => {
+            btn.addEventListener("click", function(event){
+                event.preventDefault()
+            })
+        })
+
+        
+
+        async function checkForm(){
+            const taskTitle = document.getElementsByName("title")[0]
+            const taskDesc = document.getElementsByName("desc")[0]
+            
+            if(taskTitle.value.length == 0){
+               fillWarning("error", "emptyInput")
+            }else{
+                const data = [taskTitle.value, taskDesc.value]
+                addTask(data)
+            }
+        }
+
+        async function addTask(data){
+            const id = String(Number(lastTaskId) + 1)
+            
+            tasksList.push({
+                id: id,
+                title: data[0],
+                desc: data[1],
+                date: currentDate,
+                altDate: currentAltDate,
+                endDate: "",
+                altEndDate: "",
+                status: "pending"
+            })
+
+            fillWarning("success", "newTask")
+            closePopUp()
+            displayTasks(localStorage.getItem("lastPage") || "1")
+            updateJSON()
+        }
+
+        async function sortTasks(taskList, filter){
+            switch(filter){
+                case "alfAsc":
+                    taskList.sort((a,b) => b.title.localeCompare(a.title))
+                    break
+
+                case "alfDesc":
+                    taskList.sort((a,b) => a.title.localeCompare(b.title))
+                    break
+
+                case "oldestDate":
+                    taskList.sort((a,b) => new Date(a.date) - new Date(b.date))
+                    break
+
+                case "latestDate":
+                    taskList.sort((a,b) => new Date(b.date) - new Date(a.date))
+                    break
+
+                case "oldestDateAlt":
+                    taskList.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish))
+                    break
+
+                case "latestDateAlt":
+                    taskList.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish))
+                    break
+
+                case "id":
+                    taskList.sort((a,b) => Number(a.id) - Number(b.id))
+                    break
+                default:
+                    console.error("error: Unknown selected sort type.")
+                    break
+            }
+            lastSort = String(filter)
+            displayTasks(localStorage.getItem("lastPage") || "1")
+        }
+
+        async function modifyTask(id){
+            // formatting
+            id -= 1
+            sortTasks(tasksList, "id")
+
+            const popupForm = popup.querySelector("form")
+            const inputs = popupForm.querySelectorAll("input")
+
+            var newData = []
+
+            inputs.forEach(input => {newData.push(input.value)})
+
+            tasksList[id].title = newData[0]
+            tasksList[id].desc = newData[1]
+
+            console.log(lastSort)
+            sortTasks(tasksList, lastSort)
+            fillWarning("success", "modifySuccess")
+            closePopUp()
+            displayTasks(localStorage.getItem("lastPage") || "1")
+            updateJSON()
+        }
+
 
         // toggle between not finished and finished tasks
         function togglePage(index){
@@ -313,6 +518,7 @@ fetch("/tasks")
                         }
                     }
                     submitBtn.innerHTML = `Save Changes`
+                    submitBtn.addEventListener("click", () => {modifyTask(submitBtn.dataset.id)})
                     break
             }
 
@@ -328,142 +534,7 @@ fetch("/tasks")
             popupBg.classList.add("active")
         }
 
-        async function displayTasks(type) {
-            // clear main content
-            const main = document.querySelector("main")
-            main.innerHTML = ""
-            
-            switch(type){
-                case "1":
-                    tasksList.forEach(task => {
-                        if(task.status == "pending"){
-                            const icon = document.createElement("span")
-                            icon.classList.add("task-icon", "icon-bg")
-                            icon.innerHTML += `${emptySquare} ${fullSquare}`
 
-                            const h1 = document.createElement("h1")
-                            h1.innerHTML += `${task.title}`
-
-                            const p = document.createElement("p")
-                            p.classList.add("desc-text")
-                            p.innerHTML += `${task.desc}`
-
-                            const date = document.createElement("p")
-                            date.innerHTML += `<em>Add at: <strong>${task.altDate}</strong></em>`
-
-                            const desc = document.createElement("span")
-                            desc.insertAdjacentElement("afterbegin", p)
-                            desc.insertAdjacentElement("beforeend", date)
-
-                            const text = document.createElement("span")
-                            text.classList.add("task-text")
-                            text.insertAdjacentElement("afterbegin", h1)
-                            text.insertAdjacentElement("beforeend", desc)
-
-                            const container = document.createElement("div")
-                            container.classList.add("task")
-                            container.dataset.id = task.id
-                            container.insertAdjacentElement("afterbegin", icon)
-                            container.insertAdjacentElement("beforeend", text)
-
-                            main.insertAdjacentElement("afterbegin", container)
-                        }
-                    })
-                    break
-                case "2":
-                    tasksList.forEach(task => {
-                        if(task.status == "finished"){
-                            const icon = document.createElement("span")
-                            icon.classList.add("task-icon", "icon-bg")
-                            icon.innerHTML += `${fullSquare} ${emptySquare}`
-
-                            const h1 = document.createElement("h1")
-                            h1.innerHTML += `${task.title}`
-
-                            const p = document.createElement("p")
-                            p.classList.add("desc-text")
-                            p.innerHTML += `${task.desc}`
-
-                            const date = document.createElement("p")
-                            date.innerHTML += `<em>Concluded at: <strong>${task.altEndDate}</strong></em>`
-
-                            const desc = document.createElement("span")
-                            desc.insertAdjacentElement("afterbegin", p)
-                            desc.insertAdjacentElement("beforeend", date)
-
-                            const text = document.createElement("span")
-                            text.classList.add("task-text")
-                            text.insertAdjacentElement("afterbegin", h1)
-                            text.insertAdjacentElement("beforeend", desc)
-
-                            const container = document.createElement("div")
-                            container.classList.add("task")
-                            container.dataset.id = task.id
-                            container.insertAdjacentElement("afterbegin", icon)
-                            container.insertAdjacentElement("beforeend", text)
-
-                            main.insertAdjacentElement("afterbegin", container)
-                        }
-                    })
-            }
-
-            // task eventListener when click
-            const tasks = document.querySelectorAll("main .task")
-            tasks.forEach(task => {
-                task.addEventListener("click", () => {
-                    const taskTitle = task.querySelector("h1")
-                    const taskDesc = task.querySelector(".desc-text")
-
-                    fillPopUp('edit', task.dataset.id,{
-                        Title: taskTitle.innerHTML,
-                        Description: taskDesc.innerHTML
-                    })
-                })
-            })
-
-        }
-
-        // Prevent form submit button default event
-        const submitBtns = document.querySelectorAll(".submitBtn")
-        submitBtns.forEach(btn => {
-            btn.addEventListener("click", function(event){
-                event.preventDefault()
-            })
-        })
-
-        
-
-        async function checkForm(){
-            const taskTitle = document.getElementsByName("title")[0]
-            const taskDesc = document.getElementsByName("desc")[0]
-            
-            if(taskTitle.value.length == 0){
-               fillWarning("error", "emptyInput")
-            }else{
-                const data = [taskTitle.value, taskDesc.value]
-                addTask(data)
-            }
-        }
-
-        async function addTask(data){
-            const id = String(Number(lastTaskId) + 1)
-            
-            tasksList.push({
-                id: id,
-                title: data[0],
-                desc: data[1],
-                date: currentDate,
-                altDate: currentAltDate,
-                endDate: "",
-                altEndDate: "",
-                status: "pending"
-            })
-
-            fillWarning("success", "newTask")
-            closePopUp()
-            displayTasks(localStorage.getItem("lastPage") || "1")
-            updateJSON()
-        }
 
         async function updateJSON(){
             sortTasks(tasksList, "id")
@@ -482,46 +553,6 @@ fetch("/tasks")
             // return to last selected sort type
             sortTasks(tasksList, lastSort)
         }
-
-        async function sortTasks(taskList, filter){
-            console.log(filter)
-            switch(filter){
-                case "alfAsc":
-                    taskList.sort((a,b) => a.title.localeCompare(b.title))
-                    break
-
-                case "alfDesc":
-                    taskList.sort((a,b) => b.title.localeCompare(a.title))
-                    break
-
-                case "oldestDate":
-                    taskList.sort((a,b) => new Date(a.date) - new Date(b.date))
-                    break
-
-                case "latestDate":
-                    taskList.sort((a,b) => new Date(b.date) - new Date(a.date))
-                    break
-
-                case "oldestDateAlt":
-                    taskList.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish))
-                    break
-
-                case "latestDateAlt":
-                    taskList.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish))
-                    break
-
-                case "id":
-                    taskList.sort((a,b) => Number(a.id) - Number(b.id))
-                    break
-                default:
-                    console.error("error: Unknown selected sort type.")
-                    break
-            }
-            lastSort = String(filter)
-            displayTasks(localStorage.getItem("lastPage") || "1")
-        }
-
-        
 
 
     })

@@ -242,40 +242,52 @@ svg{
     top: 1.5em;
     right: 1em;
 
-    padding: 1em 0.5em;
-    min-width: 200px;
-    width: 80vw;
-    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
 
+    z-index: 4;
+}
+
+.warning .item{
     display: grid;
     grid-template-columns: max-content auto;
     align-items: center;
     gap: 0.5em;
 
-    font-size: 0.85em;
-
-    z-index: 4;
+    padding: 1em 0.5em;
+    min-width: 200px;
+    width: 80vw;
+    max-width: 600px;
 
     background: #e6adad86;
     border-left: 3px solid #9e4848;
 
+    font-size: 0.85em;
     cursor: pointer;
 }
-.warning,
-.warning svg{
+
+.warning .item,
+.warning .item svg{
     color: #9e4848;
 }
 .warning.inactive{
     display: none;
 }
 
-.warning.success{
+.warning .item.success{
+    display: grid;
+    grid-template-columns: max-content auto;
+    align-items: center;
+    gap: 0.5em;
+
     background: #add8e686;
     border-color: #48889e;
 }
-.warning.success,
-.warning.success svg{
-    color: rgb(72, 136, 158);
+
+.warning .item.success,
+.warning .item.success svg{
+    color: #48889e;
 }
 
 
@@ -713,21 +725,21 @@ body.dark-mode{
 }
 
 /* warning */
-.dark-mode .warning{
+.dark-mode .warning .item{
     background: #d67070a9;
     border-color: #eebdbd;
 }
-.dark-mode .warning,
-.dark-mode .warning svg{
+.dark-mode .warning .item,
+.dark-mode .warning .item svg{
     color: #eebdbd;
 }
 
-.dark-mode .warning.success{
+.dark-mode .warning .item.success{
     background: #85c8dead;
     border-color: #BFE5F3;
 }
-.dark-mode .warning.success,
-.dark-mode .warning.success svg{
+.dark-mode .warning .item.success,
+.dark-mode .warning .item.success svg{
     color: #BFE5F3;
 }
 
