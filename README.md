@@ -1,8 +1,8 @@
-# TODO Web Page List - JavaScript
+# TODO List Web Page
 
 <h2>Online TODO list using <em>JavaScript</em> to retrieve data from <em>JSON</em> file containing the information of each task.</h2>
 
-<p>🎨 <a href="https://www.figma.com/design/RTiieT4R4Q1GslmhI504mg/TodoList?node-id=0-1&p=f&t=N2ZU9tTZZi54ZkSm-0">Figma</a> Project</p>
+<p>🎨 <a href="https://www.figma.com/design/RTiieT4R4Q1GslmhI504mg/TodoList?node-id=0-1&p=f&t=N2ZU9tTZZi54ZkSm-0">Figma Project</a></p>
 
 <h3>📑 Task Structure:</h3>
 <p>Each task contains:</p>
@@ -10,10 +10,11 @@
     <li>Id</li>
     <li>Title</li>
     <li>Description</li>
-    <li>Creation Date</li>
-    <li>Finish Date</li>
+    <li>Creation date / Alt creation date*</li>
+    <li>Conclusion date / Alt conclusion date*</li>
     <li>Status (pending or finished)</li>
 </ul>
+<p>* Regular: "YYYY-MM-DD", Alt: "YYYY/MM/DD"</p>
 
 <hr>
 
@@ -23,12 +24,12 @@
     <li>Sort tasks by <em>alphabetical</em> order or <em>date</em>.</li>
     <li>Dynamic dark theme support*.</li>
 </ul>
-<p>*Uses <em>localStorage</em> to remember the last selected theme.</p>
+<p>*Uses <em>localStorage</em> to remember the last selected theme, page and others.</p>
 
 <hr>
 
 <h3>💻 How to Run:</h3>
-<p>Important: You need <strong>Node.js</strong> installed on your machine.</p>
+<p>Important: You need <strong>Node.js</strong> installed at your machine.</p>
 
 <ul>
     <li>Clone the repository 
@@ -62,8 +63,8 @@ node server.js</pre>
     |   |- index.html       (Home page)
     |
     |- server
-    |   |- server.js        (Connects Backend and Frontend)
-    |   |- tasks.json       (Tasks storage)
+    |   |- server.js        (Backend-Frontend connection)
+    |   |- tasks.json       (Tasks data)
     |
 </pre>
 

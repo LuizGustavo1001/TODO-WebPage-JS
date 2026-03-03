@@ -6,8 +6,8 @@
       "desc": "Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna.",
       "date": "2025-11-13",
       "altDate": "2025/11/13",
-      "dateFinish": "",
-      "altDateFinish": "",
+      "endDate": "",
+      "altEndDate": "",
       "status": "pending"
     },
     {
@@ -16,8 +16,8 @@
       "desc": "Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna.",
       "date": "2025-11-14",
       "altDate": "2025/11/14",
-      "dateFinish": "",
-      "altDateFinish": "",
+      "endDate": "",
+      "altEndDate": "",
       "status": "pending"
     },
     {
@@ -25,9 +25,9 @@
       "title": "Título 3",
       "desc": "Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna.",
       "date": "2025-11-10",
-      "altDate": "2025/11/14",
-      "dateFinish": "",
-      "altDateFinish": "",
+      "altDate": "2025/11/10",
+      "endDate": "",
+      "altEndDate": "",
       "status": "pending"
     },
     {
@@ -36,8 +36,8 @@
       "desc": "Lorem ipsum conubia libero curabitur suscipit ipsum neque aenean, lacus curabitur senectus faucibus blandit malesuada eros gravida netus, convallis adipiscing massa feugiat porttitor turpis magna.",
       "date": "2025-11-17",
       "altDate": "2025/11/17",
-      "dateFinish": "2025-11-18",
-      "altDateFinish": "2025/11/18",
+      "endDate": "2025-11-18",
+      "altEndDate": "2025/11/18",
       "status": "finished"
     },
     {
@@ -45,9 +45,9 @@
       "title": "task 6",
       "desc": "fbasda",
       "date": "2025-11-22",
-      "altDate": "2025/11/25",
-      "dateFinish": "",
-      "altDateFinish": "",
+      "altDate": "2025/11/22",
+      "endDate": "",
+      "altEndDate": "",
       "status": "pending"
     }
   ]

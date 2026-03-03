@@ -129,7 +129,8 @@ function fillWarning(type, message){
                 warningText.innerHTML += `Server Error. `
             }
             break
-        default:   
+        default:
+            warning.classList.add("success")
             if(message == "newTask"){
                 warningText.innerHTML += `New Task add successfully to the database `
             }else{
@@ -155,8 +156,8 @@ fetch("/tasks")
         const month = String(time.getMonth() + 1).padStart(2, "0")
         const year  = time.getFullYear()
 
-        const date    = `${year}-${month}-${day}`
-        const altDate = `${year}/${month}/${day}`
+        const currentDate    = `${year}-${month}-${day}`
+        const currentAltDate = `${year}/${month}/${day}`
 
         // tasks from json file will be stored here
         var tasksList = []
@@ -167,15 +168,31 @@ fetch("/tasks")
                 title: task.title,
                 desc: task.desc,
                 date: task.date,
-                altDate: task.altDate.Date,
-                endDate: task.dateFinish,
-                altEndDate: task.altDateFinish,
+                altDate: task.altDate,
+                endDate: task.endDate,
+                altEndDate: task.altEndDate,
                 status: task.status
             })
         })
 
+        // default sort
+        let lastSort = "latestDate"
+        sortTasks(tasksList, lastSort);
+
         var taskAmount = tasksList.length
         var lastTaskId = tasksList[(tasksList.length) - 1].id
+        if(lastTaskId <= 0) lastTaskId == 1
+
+        // sort items event
+        const sortMenu = document.querySelector('.menu-list[data-id="sort"]')
+        const sortItems = sortMenu.querySelectorAll("li")
+        sortItems.forEach(item => {
+            item.addEventListener("click", () => {
+                const sortType = item.dataset.id || "latestDate"
+                sortTasks(tasksList, sortType)
+                lastSort = sortType
+            })
+        })
 
         const addTasksIcon = document.querySelector(".add-tasks")
         addTasksIcon.addEventListener("click", () => {fillPopUp('add')})
@@ -308,7 +325,6 @@ fetch("/tasks")
             if(type == "edit"){
                 popup.insertAdjacentElement("beforeend", removeBtn)
             }
-            
             popupBg.classList.add("active")
         }
 
@@ -332,8 +348,12 @@ fetch("/tasks")
                             p.classList.add("desc-text")
                             p.innerHTML += `${task.desc}`
 
+                            const date = document.createElement("p")
+                            date.innerHTML += `<em>Add at: <strong>${task.altDate}</strong></em>`
+
                             const desc = document.createElement("span")
                             desc.insertAdjacentElement("afterbegin", p)
+                            desc.insertAdjacentElement("beforeend", date)
 
                             const text = document.createElement("span")
                             text.classList.add("task-text")
@@ -365,7 +385,7 @@ fetch("/tasks")
                             p.innerHTML += `${task.desc}`
 
                             const date = document.createElement("p")
-                            date.innerHTML += `<em>Add date: <strong>${task.altEndDate}</strong></em>`
+                            date.innerHTML += `<em>Concluded at: <strong>${task.altEndDate}</strong></em>`
 
                             const desc = document.createElement("span")
                             desc.insertAdjacentElement("afterbegin", p)
@@ -420,17 +440,86 @@ fetch("/tasks")
             if(taskTitle.value.length == 0){
                fillWarning("error", "emptyInput")
             }else{
-                alert(`Título: ${taskTitle.value} \nDescrição: ${taskDesc.value}`)
+                const data = [taskTitle.value, taskDesc.value]
+                addTask(data)
             }
-
-    
         }
 
         async function addTask(data){
+            const id = String(Number(lastTaskId) + 1)
+            
+            tasksList.push({
+                id: id,
+                title: data[0],
+                desc: data[1],
+                date: currentDate,
+                altDate: currentAltDate,
+                endDate: "",
+                altEndDate: "",
+                status: "pending"
+            })
 
+            fillWarning("success", "newTask")
+            closePopUp()
+            displayTasks(localStorage.getItem("lastPage") || "1")
+            updateJSON()
         }
 
+        async function updateJSON(){
+            sortTasks(tasksList, "id")
 
+            lastTaskId = tasksList.length
+
+            fetch("/update-file", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(tasksList)
+            })
+            .then(res       => res.json())
+            .then(response  => {console.log("Server Answer: ", response)})
+            .catch(error    => console.log(error))
+
+            // return to last selected sort type
+            sortTasks(tasksList, lastSort)
+        }
+
+        async function sortTasks(taskList, filter){
+            console.log(filter)
+            switch(filter){
+                case "alfAsc":
+                    taskList.sort((a,b) => a.title.localeCompare(b.title))
+                    break
+
+                case "alfDesc":
+                    taskList.sort((a,b) => b.title.localeCompare(a.title))
+                    break
+
+                case "oldestDate":
+                    taskList.sort((a,b) => new Date(a.date) - new Date(b.date))
+                    break
+
+                case "latestDate":
+                    taskList.sort((a,b) => new Date(b.date) - new Date(a.date))
+                    break
+
+                case "oldestDateAlt":
+                    taskList.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish))
+                    break
+
+                case "latestDateAlt":
+                    taskList.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish))
+                    break
+
+                case "id":
+                    taskList.sort((a,b) => Number(a.id) - Number(b.id))
+                    break
+                default:
+                    console.error("error: Unknown selected sort type.")
+                    break
+            }
+            lastSort = String(filter)
+            displayTasks(localStorage.getItem("lastPage") || "1")
+        }
 
         
 
