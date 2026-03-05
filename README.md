@@ -2,7 +2,7 @@
 
 ## Online TODO list using _JavaScript_ to retrieve data from _JSON_ file containing the information of each task.
 
-[![🎨 Figma Project](/images/figma.png "Click here to see Figma project page.")](https://www.figma.com/design/RTiieT4R4Q1GslmhI504mg/TodoList?node-id=0-1&p=f&t=N2ZU9tTZZi54ZkSm-0) [![🌐 Web Page*](/images/webpage.png "Click here to see Web Page.")](https://vercel-todo-list-nopqxtezt.vercel.app)
+[![🎨 Figma Project](/images/figma.png "Click here to see Figma project page.")](https://www.figma.com/design/RTiieT4R4Q1GslmhI504mg/TodoList?node-id=0-1&p=f&t=N2ZU9tTZZi54ZkSm-0) [![🌐 Web Page*](/images/webpage.png "Click here to see Web Page.")](https://todo-web-page-js.vercel.app/)
 > _*Everytime that you reload the page the data will be reset to default._
 
 ### Task Structure: 
