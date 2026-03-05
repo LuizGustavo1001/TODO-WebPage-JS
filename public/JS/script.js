@@ -66,97 +66,6 @@ const fullSquare = `
     </svg>
 `
 
-// TOGGLE THEME (dark mode)
-const toggleThemeIcon = document.querySelector(".toggle-theme")
-toggleThemeIcon.addEventListener("click", toggleTheme)
-
-function toggleTheme(){
-    body.classList.toggle("dark-mode")
-
-    const isDark = body.classList.contains("dark-mode")
-    localStorage.setItem("theme", isDark ? "dark" : "light")
-
-
-    const icons = toggleThemeIcon.querySelectorAll(".toggle-icon")
-    icons.forEach(icon => {icon.classList.toggle("inactive")})
-}
-
-// Theme (local storage)
-const lastTheme = localStorage.getItem("theme") || "light"
-if(lastTheme == "dark"){toggleTheme()}
-
-
-
-// POPUP functions
-function closePopUp(){
-    const closeIcon = document.querySelectorAll(".close-icon")
-    closeIcon.forEach(icon => {
-        let closestPopUp = icon.closest(".popup-bg")
-        if(closestPopUp.classList.contains("active")){
-            closestPopUp.classList.add("fade-out")
-
-            setTimeout(() => {
-                closestPopUp.classList.remove("active")
-                closestPopUp.classList.remove("fade-out")
-            }, 300)
-        }
-    })
-}
-
-
-// Warning functions
-function fillWarning(type, message){
-    const item = document.createElement("div")
-    item.classList.add("item")
-    item.addEventListener("click", () => {
-        item.classList.add("fade-out")
-        setTimeout(() => {
-            item.remove()
-        }, 500)
-    })
-
-    const warningText   = document.createElement("p")
-    let warningIcon     = smileFace
-
-    switch(type){
-        case "error": 
-            warningIcon = sadFace
-            warningText.innerHTML += `Error: `
-            if(message == "emptyInput"){
-                warningText.innerHTML += `Some empty inputs detected while trying to add new tasks. `
-            }else{
-                warningText.innerHTML += `Server Error. `
-            }
-            break
-        default:
-            item.classList.add("success")
-            if(message == "newTask"){
-                warningText.innerHTML += `New Task add successfully to the database! `
-            }else if(message == "modifySuccess"){
-                warningText.innerHTML += `Task data modified with success! `
-            }else if(message == "removeTask"){
-                warningText.innerHTML += `Task remove with success! `
-            }else{
-                warningText.innerHTML += `Server Error. `
-            }
-            break
-    }
-
-    warningText.innerHTML += `<em>Click here to close this warning</em>.`
-
-    item.innerHTML += warningIcon
-    item.insertAdjacentElement("beforeend", warningText)
-    
-    warning.insertAdjacentElement("beforeend", item)
-    
-    setTimeout(() => {
-        item.classList.add("fade-out")
-        setTimeout(() => {
-            item.remove()
-        }, 500)
-    }, 10000)
-}
-
 
 fetch("/tasks")
     .then(res => res.json())
@@ -191,8 +100,7 @@ fetch("/tasks")
 
         var taskAmount = tasksList.length
 
-
-        // sort items event
+        // sort items event(sort menu list)
         const sortMenu = document.querySelector('.menu-list[data-id="sort"]')
         const sortItems = sortMenu.querySelectorAll("li")
         sortItems.forEach(item => {
@@ -203,14 +111,108 @@ fetch("/tasks")
             })
         })
 
+        // add task icon click event
         const addTasksIcon = document.querySelector(".add-tasks")
         addTasksIcon.addEventListener("click", () => {fillPopUp('add')})
 
+        // toggle theme (dark mode - light mode)
+        const toggleThemeIcon = document.querySelector(".toggle-theme")
+        toggleThemeIcon.addEventListener("click", toggleTheme)
+
+        function toggleTheme(){
+            body.classList.toggle("dark-mode")
+
+            const isDark = body.classList.contains("dark-mode")
+            localStorage.setItem("theme", isDark ? "dark" : "light")
+
+            const icons = toggleThemeIcon.querySelectorAll(".toggle-icon")
+            icons.forEach(icon => {icon.classList.toggle("inactive")})
+        }
+
+        // Theme (local storage)
+        const lastTheme = localStorage.getItem("theme") || "light"
+        if(lastTheme == "dark"){toggleTheme()}
+
+        // Page (local storage)
         let currentPage = localStorage.getItem("lastPage") || "1"
         togglePage(currentPage)
         suspMenuBg.dataset.id = currentPage
 
-        suspMenuIcon.forEach(icon =>{
+        // Popup functions
+        function closePopUp(){
+            const closeIcon = document.querySelectorAll(".close-icon")
+            closeIcon.forEach(icon => {
+                let closestPopUp = icon.closest(".popup-bg")
+                if(closestPopUp.classList.contains("active")){
+                    closestPopUp.classList.add("fade-out")
+
+                    setTimeout(() => {
+                        closestPopUp.classList.remove("active")
+                        closestPopUp.classList.remove("fade-out")
+                    }, 300)
+                }
+            })
+        }
+
+        // Display warning function
+        function fillWarning(type, message){
+            const item = document.createElement("div")
+            item.classList.add("item")
+            item.addEventListener("click", () => {
+                item.classList.add("fade-out")
+                setTimeout(() => {
+                    item.remove()
+                }, 500)
+            })
+
+            const warningText   = document.createElement("p")
+            let warningIcon     = smileFace
+
+            switch(type){
+                case "error": 
+                    warningIcon = sadFace
+                    warningText.innerHTML += `Error: `
+                    if(message == "emptyInput"){
+                        warningText.innerHTML += `<strong>Some empty inputs detected while trying to add new tasks.</strong> `
+                    }else{
+                        warningText.innerHTML += `<strong>Server Error.</strong> `
+                    }
+
+                    break
+                default:
+                    item.classList.add("success")
+                    if(message == "newTask"){
+                        warningText.innerHTML += `<strong>New Task add successfully to the database!</strong> `
+                    }else if(message == "modifySuccess"){
+                        warningText.innerHTML += `<strong>Task data modified with success!</strong> `
+                    }else if(message == "removeTask"){
+                        warningText.innerHTML += `<strong>Task remove with success!</strong> `
+                    }else if(message == "markTask"){
+                        warningText.innerHTML += `<strong>Task marked with success. Check the other page to find it.</strong> `
+                    }else{
+                        warningText.innerHTML += `<strong>Server Error.</strong> `
+                    }
+
+                    break
+            }
+
+            warningText.innerHTML += `<em>Click here to close this warning</em>.`
+
+            item.innerHTML += warningIcon
+            item.insertAdjacentElement("beforeend", warningText)
+            
+            warning.insertAdjacentElement("beforeend", item)
+            
+            setTimeout(() => {
+                item.classList.add("fade-out")
+                setTimeout(() => {
+                    item.remove()
+                }, 500)
+            }, 10000)
+        }
+
+        // Suspended menu animation + event
+        suspMenuIcon.forEach(icon => {
             icon.addEventListener("click", () => {
                 const id    = icon.dataset.id
                 currentPage = id
@@ -229,13 +231,48 @@ fetch("/tasks")
             })
         })
 
-        function displayTasks(type) {
+
+        // toggle between not finished and finished tasks
+        function togglePage(index){
+            const headerTitle   = document.querySelector("header .title")
+            const headerIcon    = headerTitle.querySelector(".icon")
+            const headerText    = headerTitle.querySelector(".title-text")
+
+            switch(index){
+                case "1":
+                    headerIcon.innerHTML = nfTaskIcon
+                    headerText.innerHTML = `
+                        <h1>Not Finished Tasks</h1>
+                        <p>Click on a task to edit. Click on the + button to add tasks.</p>
+                    `
+                    addTasksIcon.classList.remove("inactive")
+
+                    displayTasks("1")
+
+                    break
+                default:
+                    headerIcon.innerHTML = fTaskIcon
+                    headerText.innerHTML = `
+                        <h1>Finished Tasks</h1>
+                        <p>Click on a task to edit.</p>
+                    `
+                    addTasksIcon.classList.add("inactive")
+
+                    displayTasks("2")
+
+                    break
+            }
+        }
+
+        
+        // Display tasks at "main"
+        function displayTasks(type){
             // clear main content
             const main = document.querySelector("main")
             main.innerHTML = ""
             
             switch(type){
-                case "1":
+                case "1": // pending
                     tasksList.forEach(task => {
                         if(task.status == "pending"){
                             const icon = document.createElement("span")
@@ -246,7 +283,7 @@ fetch("/tasks")
                                 const idContainer = icon.closest(".task")
                                 const id = idContainer.dataset.id
                                 if(id != null){
-                                    markTask(id)
+                                    modifyTask("mark", id)
                                 }else{fillWarning("error", "server")}
                             })
 
@@ -278,8 +315,9 @@ fetch("/tasks")
                             main.insertAdjacentElement("afterbegin", container)
                         }
                     })
+
                     break
-                case "2":
+                case "2": // finished
                     tasksList.forEach(task => {
                         if(task.status == "finished"){
                             const icon = document.createElement("span")
@@ -290,7 +328,7 @@ fetch("/tasks")
                                 const idContainer = icon.closest(".task")
                                 const id = idContainer.dataset.id
                                 if(id != null){
-                                    markTask(id)
+                                    modifyTask("mark", id)
                                 }else{fillWarning("error", "server")}
                             })
 
@@ -322,16 +360,21 @@ fetch("/tasks")
                             main.insertAdjacentElement("afterbegin", container)
                         }
                     })
+                    
+                    break
             }
 
-            // task eventListener when click
+            // task eventListener when click (just text field)
             const tasks = document.querySelectorAll("main .task")
             tasks.forEach(task => {
-                task.addEventListener("click", () => {
-                    const taskTitle = task.querySelector("h1")
-                    const taskDesc = task.querySelector(".desc-text")
+                const taskId = task.dataset.id
+                const taskText = task.querySelector(".task-text")
 
-                    fillPopUp('edit', task.dataset.id,{
+                taskText.addEventListener("click", () => {
+                    const taskTitle = taskText.querySelector("h1")
+                    const taskDesc = taskText.querySelector(".desc-text")
+
+                    fillPopUp('edit', taskId,{
                         Title: taskTitle.innerHTML,
                         Description: taskDesc.innerHTML
                     })
@@ -339,25 +382,15 @@ fetch("/tasks")
             })
         }
 
-        // Prevent form submit button default event
-        const submitBtns = document.querySelectorAll(".submitBtn")
-        submitBtns.forEach(btn => {
-            btn.addEventListener("click", function(event){
-                event.preventDefault()
-            })
-        })
-
-        
-
         function checkForm(){
             const taskTitle = document.getElementsByName("title")[0]
-            const taskDesc = document.getElementsByName("desc")[0]
+            const taskDesc  = document.getElementsByName("desc")[0]
             
             if(taskTitle.value.length == 0){
                fillWarning("error", "emptyInput")
             }else{
                 const data = [taskTitle.value, taskDesc.value]
-                addTask(data)
+                modifyTask("add", "", data)
             }
         }
 
@@ -365,142 +398,128 @@ fetch("/tasks")
             switch(filter){
                 case "alfAsc":
                     taskList.sort((a,b) => b.title.localeCompare(a.title))
-                    break
 
+                    break
                 case "alfDesc":
                     taskList.sort((a,b) => a.title.localeCompare(b.title))
-                    break
 
+                    break
                 case "oldestDate":
                     taskList.sort((a,b) => new Date(a.date) - new Date(b.date))
-                    break
 
+                    break
                 case "latestDate":
                     taskList.sort((a,b) => new Date(b.date) - new Date(a.date))
-                    break
 
+                    break
                 case "oldestDateAlt":
                     taskList.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish))
-                    break
 
+                    break
                 case "latestDateAlt":
                     taskList.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish))
-                    break
 
+                    break
                 case "id":
                     taskList.sort((a,b) => Number(a.id) - Number(b.id))
+
                     break
                 default:
                     console.error("error: Unknown selected sort type.")
+
                     break
             }
             displayTasks(localStorage.getItem("lastPage") || "1")
         }
 
-        function modifyTask(id){
+
+        function modifyTask(action, id, data = null){
             // formatting
-            id -= 1
             sortTasks(tasksList, "id")
 
-            const popupForm = popup.querySelector("form")
-            const inputs = popupForm.querySelectorAll("input")
+            let messageType = ""
+            let message = ""
 
-            var newData = []
+            switch(action){
+                case "edit":
+                    const popupForm = popup.querySelector("form")
+                    const inputs = popupForm.querySelectorAll("input")
 
-            inputs.forEach(input => {newData.push(input.value)})
+                    var newData = []
 
-            tasksList[id].title = newData[0]
-            tasksList[id].desc = newData[1]
+                    inputs.forEach(input => {newData.push(input.value)})
 
-            sortTasks(tasksList, lastSort)
-            fillWarning("success", "modifySuccess")
-            closePopUp()
-            displayTasks(localStorage.getItem("lastPage") || "1")
-            updateJSON()
-        }
+                    tasksList.forEach(task => {
+                        if(task.id == id){
+                            task.title = newData[0]
+                            task.desc = newData[1]
+                        }
+                    })
 
-        function removeTask(id){
-            // formatting
-            id -= 1
-            sortTasks(tasksList, "id")
-            
-            tasksList.splice(id, 1)
+                    messageType = "success"
+                    message = "modifySuccess"
 
-            //sortTasks(tasksList, lastSort)
-            fillWarning("success", "removeTask")
-            closePopUp()
-            displayTasks(localStorage.getItem("lastPage") || "1")
-            updateJSON()
-        }
+                    break
+                case "remove":
+                    tasksList = tasksList.filter((task) => task.id != id)
 
-        function addTask(data){
-            sortTasks(tasksList, "id")
-            let newId = String(taskAmount + 1)
-            
-            tasksList.push({
-                id: newId,
-                title: data[0],
-                desc: data[1],
-                date: currentDate,
-                altDate: currentAltDate,
-                endDate: "",
-                altEndDate: "",
-                status: "pending"
-            })
+                    messageType = "success"
+                    message = "removeTask"
 
-            fillWarning("success", "newTask")
-            closePopUp()
-            displayTasks(localStorage.getItem("lastPage") || "1")
-            updateJSON()
-        }
+                    break
+                case "add":
+                    let newId = String(taskAmount + 1)
+                    
+                    tasksList.push({
+                        id: newId,
+                        title: data[0],
+                        desc: data[1],
+                        date: currentDate,
+                        altDate: currentAltDate,
+                        endDate: "",
+                        altEndDate: "",
+                        status: "pending"
+                    })
 
-        function markTask(id){
-            id = String(id - 1)
-            sortTasks(tasksList, "id")
-            if(tasksList[id].status == "pending"){
-                tasksList[id].status = "finished"
-            }else{
-                tasksList[id].status = "pending"
-            }   
-            
-            sortTasks(tasksList, lastSort)
-            closePopUp()
-            displayTasks(localStorage.getItem("lastPage") || "1")
-            updateJSON()
-        }
+                    messageType = "success"
+                    message = "newTask"
 
+                    break
+                case "mark":
+                    tasksList.forEach(task => {
+                        if(task.id == id){
+                            console.log(task.id)
+                            if(task.status == "pending"){
+                                task.endDate = currentDate
+                                task.altEndDate = currentAltDate
+                                task.status = "finished"
+                            }else{
+                                task.endDate = ""
+                                task.altEndDate = ""
+                                task.status = "pending"
+                            }
+                        }
+                    })
+                    
+                    messageType = "success"
+                    message = "markTask"
 
-        // toggle between not finished and finished tasks
-        function togglePage(index){
-            const headerTitle   = document.querySelector("header .title")
-            const headerIcon    = headerTitle.querySelector(".icon")
-            const headerText    = headerTitle.querySelector(".title-text")
-
-            switch(index){
-                case "1":
-                    headerIcon.innerHTML = nfTaskIcon
-                    headerText.innerHTML = `
-                        <h1>Not Finished Tasks</h1>
-                        <p>Click on a task to edit. Click on the + button to add tasks.</p>
-                    `
-                    addTasksIcon.classList.remove("inactive")
-
-                    displayTasks("1")
                     break
                 default:
-                    headerIcon.innerHTML = fTaskIcon
-                    headerText.innerHTML = `
-                        <h1>Finished Tasks</h1>
-                        <p>Click on a task to edit.</p>
-                    `
-                    addTasksIcon.classList.add("inactive")
+                    messageType = "error"
+                    message = "server"
 
-                    displayTasks("2")
                     break
             }
+            
+            if(message != "") fillWarning(messageType, message)
+            sortTasks(tasksList, lastSort)
+            closePopUp()
+            updateJSON()
         }
 
-        function fillPopUp(type, id, values = null){
+
+        function fillPopUp(type, id = "", values = null){
             // clear popup content
             popup.innerHTML = ""
 
@@ -563,8 +582,8 @@ fetch("/tasks")
                         }
                     }
                     submitBtn.innerHTML = `Save Changes`
-                    submitBtn.addEventListener("click", () => {modifyTask(submitBtn.dataset.id)})
-                    removeBtn.addEventListener("click", () => {removeTask(submitBtn.dataset.id)})
+                    submitBtn.addEventListener("click", () => {modifyTask("edit", submitBtn.dataset.id)})
+                    removeBtn.addEventListener("click", () => {modifyTask("remove", submitBtn.dataset.id)})
                     break
             }
 
@@ -574,13 +593,12 @@ fetch("/tasks")
             popup.insertAdjacentElement("beforeend", title)
             popup.insertAdjacentElement("beforeend", form)
             popup.insertAdjacentElement("beforeend", submitBtn)
-            if(type == "edit"){
-                popup.insertAdjacentElement("beforeend", removeBtn)
-            }
+            if(type == "edit"){popup.insertAdjacentElement("beforeend", removeBtn)}
             popupBg.classList.add("active")
         }
 
 
+        // Update JSON file with modified tasksList
         async function updateJSON(){
             sortTasks(tasksList, "id")
 
@@ -598,324 +616,4 @@ fetch("/tasks")
             // return to last selected sort type
             sortTasks(tasksList, lastSort)
         }
-
-        
-
-
-
-
     })
-
-/*
-fetch("/tasks")
-    .then(res => res.json())
-    .then(data => {
-        const time = new Date();
-        const day   = String(time.getDate()).padStart(2, "0");
-        const month = String(time.getMonth() + 1).padStart(2, "0");
-        const year  = time.getFullYear();
-
-        const date    = `${year}-${month}-${day}`;
-        const altDate = `${day}/${month}/${year}`;
-
-        const finishedTaskList      = document.querySelector(".finished-list");
-        const notFinishedTaskList   = document.querySelector(".not-finished-list");
-
-        var tasksList = [];
-
-        data.tasks.forEach(task => {
-            tasksList.push({
-                id: task.id,
-                title: task.title,
-                desc: task.desc,
-                date: task.date,
-                altDate: task.altDate,
-                dateFinish: task.dateFinish,
-                altDateFinish: task.altDateFinish,
-                status: task.status
-            });
-        });
-
-        var lastTaskId = tasksList[(tasksList.length) - 1].id;
-        
-        // default sort
-        sortTasks(tasksList, "latestDate"); 
-        
-        function sortTasks(taskList, filter){
-            switch(filter){
-                case "alfAsc":
-                    taskList.sort((a,b) => a.title.localeCompare(b.title));
-                    break;
-
-                case "alfDesc":
-                    taskList.sort((a,b) => b.title.localeCompare(a.title));
-                    break;
-
-                case "oldestDate":
-                    taskList.sort((a,b) => new Date(a.date) - new Date(b.date));
-                    break;
-
-                case "latestDate":
-                    taskList.sort((a,b) => new Date(b.date) - new Date(a.date));
-                    break;
-
-                case "oldestDateAlt":
-                    taskList.sort((a,b) => new Date(a.dateFinish) - new Date(b.dateFinish));
-                    break;
-
-                case "latestDateAlt":
-                    taskList.sort((a,b) => new Date(b.dateFinish) - new Date(a.dateFinish));
-                    break;
-
-                case "id":
-                    taskList.sort((a,b) => Number(a.id) - Number(b.id));
-                    break;
-
-                default:
-                    console.error("ERROR: Unknown selected sort type.");
-                    break;
-            }
-            displayTasks(taskList);
-        }
-        
-        // display task + edit popUp
-        function displayTasks(list){
-            const notFinishedTaskIcon = "<svg class='conclude-task-icon' xmlns='http://www.w3.org/2000/svg' height='20' width='20' viewBox='0 0 640 640'><path d='M528 320C528 205.1 434.9 112 320 112C205.1 112 112 205.1 112 320C112 434.9 205.1 528 320 528C434.9 528 528 434.9 528 320zM64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C178.6 576 64 461.4 64 320z'/></svg>";
-            const exitIcon            = "<svg class='size-6 exit-button close-change-task' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor'><path fill-rule='evenodd' d='M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z' clip-rule='evenodd' /></svg>";
-            const finishedTaskIcon    = "<svg class='undo-conclude-icon' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'><path d='M434.8 70.1c14.3 10.4 17.5 30.4 7.1 44.7l-256 352c-5.5 7.6-14 12.3-23.4 13.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l101.5 101.5 234-321.7c10.4-14.3 30.4-17.5 44.7-7.1z'/></svg>"
-            
-            // reset task box content
-            finishedTaskList.innerHTML      = "";
-            notFinishedTaskList.innerHTML   = "";
-
-            // reset popups on HTML
-            const oldPopUp = document.querySelectorAll(".change-task");
-            oldPopUp.forEach(popUp => {popUp.remove()});
-
-            var pendingAmount  = 0;
-            var finishedAmount = 0;
-
-            list.forEach(task => {
-                const popUp = `
-                    <div class="pop-up-container change-task hidden-div" data-id="${task.id}">
-                        <div class="pop-up-box">
-                            <div class="pop-up-title">
-                                <p>Alterar dados de uma tarefa</p>
-                                ${exitIcon}
-                            </div>
-
-                            <div class="pop-up-main">
-                                <div class="pop-up-input">
-                                    <label for="itaskName${task.id}">Título: <small>Máximo 40 caracteres</small></label>
-                                    <input type="text" name="taskName${task.id}" id="itaskName${task.id}" placeholder="Máximo 40 caracteres" maxlength="40" value="${task.title}">
-                                </div>
-
-                                <div class="pop-up-input descInput">
-                                    <label for="itaskDesc${task.id}">Descrição: <small>Máximo 300 caracteres</small> </label>
-                                    <input type="text" name="taskDesc${task.id}" id="itaskDesc${task.id}" class="" placeholder="Máximo 300 caracteres" maxlength="300" value="${task.desc}">
-                                </div>
-
-                                <div class="pop-up-buttons">
-                                    <button class="submit-button">Confirmar Alteração</button>
-                                    <button class="remove-button">Remover Tarefa</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                body.insertAdjacentHTML("afterbegin", popUp);
-
-                const taskBox       = document.createElement("li");
-                taskBox.classList.add("task-box");
-                taskBox.dataset.id  = task.id;
-
-                const taskDiv           = document.createElement("div");
-                taskDiv.classList.add("task-text");
-                taskDiv.dataset.id      = task.id;
-
-                const taskTitle         = document.createElement("h2");
-                const taskDesc          = document.createElement("p");
-                const taskDate          = document.createElement("p");
-                const taskFinishDate    = document.createElement("p");
-                
-                taskTitle.textContent       = task.title;
-                taskDesc.textContent        = task.desc;
-                taskDate.innerHTML          = `<strong>Adicionado em: ${task.altDate}</strong>`;
-                taskFinishDate.innerHTML    = `<strong>Finalizado em: ${task.altDateFinish || ""}</strong>`;
-
-                if(task.status === "pending"){
-                    taskBox.insertAdjacentHTML("afterbegin", notFinishedTaskIcon);
-                    taskDiv.append(taskTitle, taskDesc, taskDate);
-                    taskBox.append(taskDiv);
-                    notFinishedTaskList.appendChild(taskBox);
-                    pendingAmount++;
-                }else{
-                    taskBox.insertAdjacentHTML("afterbegin", finishedTaskIcon);
-                    taskDiv.append(taskTitle, taskDesc, taskFinishDate);
-                    taskBox.append(taskDiv);
-                    finishedTaskList.appendChild(taskBox);
-                    finishedAmount++;
-                }
-
-                console.log("Tasks loaded with success.")
-            });
-
-            // open pop up event
-            const taskTextBox = document.querySelectorAll(".task-text");
-            taskTextBox.forEach(task => {
-                task.addEventListener("click", () => {
-                    const taskId = task.closest(".task-box").dataset.id;
-                    displayPopUp("change-task", taskId);
-                });
-            });
-
-            // remove task event
-            const removeTaskButton = document.querySelectorAll(".remove-button");
-            removeTaskButton.forEach(button => {
-                const taskId = button.closest(".pop-up-container").dataset.id;
-                button.addEventListener("click", () => {modifyTask("remove", taskId)});
-            });
-            
-            // change task event
-            const changeTaskButton = document.querySelectorAll(".submit-button");
-            changeTaskButton.forEach(button => {
-                const taskId = button.closest(".pop-up-container").dataset.id;
-                button.addEventListener("click", () => {modifyTask("mod_title_desc", taskId)});
-            });
-
-            // complete task
-            const undoConcludeTaskIcon = document.querySelectorAll(".undo-conclude-icon");
-            const concludeTaskIcon     = document.querySelectorAll(".conclude-task-icon");
-
-            undoConcludeTaskIcon.forEach(icon => {
-                icon.addEventListener("click", () => {
-                    const taskId = icon.closest(".task-box").dataset.id;
-                    modifyTask("mod_status", taskId, "pending");
-                });
-            });
-
-            concludeTaskIcon.forEach(icon => {
-                icon.addEventListener("click", () => {
-                    const taskId = icon.closest(".task-box").dataset.id;
-                    modifyTask("mod_status", taskId, "finished");
-                });
-            });
-
-            // close popUp
-            const exitButtons = document.querySelectorAll(".exit-button");
-
-            exitButtons.forEach(button => {
-                const taskId = button.closest(".pop-up-container").dataset.id;
-                button.addEventListener("click", () => {closePopUp(taskId)})
-            });
-
-            if(pendingAmount == 0){
-                notFinishedTaskList.innerHTML   = "<p style='text-align:center'>Parabéns, não há nenhuma tarefa pendente!</p>";    
-            }else if(finishedAmount == 0){
-                finishedTaskList.innerHTML      = "<p style='text-align:center;'>Ainda não há nenhuma tarefa concluída.</p>"
-            }
-        }
-
-        //sort list options
-        const sortItem = document.querySelectorAll(".sort-item");
-        sortItem.forEach(sort => {
-            const filterId = sort.dataset.id;
-            sort.addEventListener("click", () => {sortTasks(tasksList, filterId)});
-        });
-        
-        // require update file on backend
-        function sendUpdate(dataList){
-            sortTasks(dataList, "id");
-
-            lastTaskId = tasksList[(dataList.length) - 1].id
-
-            fetch("/update-file", {
-                method: "POST",
-                headers: {"Content-Type": "application/json"},
-                body: JSON.stringify(dataList)
-            })
-            .then(res       => res.json())
-            .then(response  => {console.log("Server Answer: ", response)})
-            .catch(error    => console.log(error));
-
-            sortTasks(dataList, "latestDate");
-        }
-        
-        // add new task
-        const addTaskButton = document.querySelector(".add-button");
-        addTaskButton.addEventListener("click", addTask);
-
-        
-        function addTask(){
-            const taskName      = document.querySelector("#itaskName");
-            const taskNameValue = String(taskName.value);
-
-            const taskDesc      = document.querySelector("#itaskDesc");
-            const taskDescValue = String(taskDesc.value);
-            
-            const id = String(Number(lastTaskId)+1);
-
-            // add to taskList
-            tasksList.push({
-                id: id,
-                title: taskNameValue,
-                desc: taskDescValue,
-                date: date,
-                altDate: altDate,
-                dateFinish: "",
-                altDateFinish: "",
-                status: "pending",
-            });
-
-            console.log("New task add with success.");
-            taskName.value = '';
-            taskDesc.value = '';
-
-            // update file
-            displayPopUp("add-task");
-            displayTasks(tasksList);
-            sendUpdate(tasksList);
-        }
-
-        function modifyTask(action, taskId, changeTo = null){
-            tasksList.forEach((task, index) => {
-                if(task.id == taskId){
-                    switch(action){
-                        case "mod_title_desc":
-                            var newTitleInput   = document.querySelector(`#itaskName${taskId}`);
-                            var newTitle        = String(newTitleInput.value);
-
-                            var newDescInput    = document.querySelector(`#itaskDesc${taskId}`);
-                            var newDesc         = String(newDescInput.value);
-
-                            tasksList[index].title = newTitle;
-                            tasksList[index].desc  = newDesc;
-
-                            console.log("Task changed with success");
-                            alert(`Título e/ou descrição da tarefa alterado com sucesso.`);
-                            break;
-                        
-                        case "remove":
-                            tasksList.splice(index, 1); // index and amount
-
-                            console.log("Task removed with success");
-                            alert(`Tarefa removida com sucesso.`);
-                            break;
-                        
-                        case "mod_status":
-                            tasksList[index].status         = changeTo;
-                            tasksList[index].dateFinish     = date;
-                            tasksList[index].altDateFinish  = altDate;
-
-                            console.log("Task status changed with success");
-                            break;
-                    }
-                }
-            })
-            displayPopUp("change-task", taskId);
-            displayTasks(tasksList);
-            sendUpdate(tasksList);
-        }
-    })
-    .catch(error => console.error(error));
-    */
