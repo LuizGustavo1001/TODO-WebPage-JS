@@ -66,6 +66,22 @@ const fullSquare = `
     </svg>
 `
 
+// Popup functions
+function closePopUp(){
+    const closeIcon = document.querySelectorAll(".close-icon")
+    closeIcon.forEach(icon => {
+        let closestPopUp = icon.closest(".popup-bg")
+        if(closestPopUp.classList.contains("active")){
+            closestPopUp.classList.add("fade-out")
+
+            setTimeout(() => {
+                closestPopUp.classList.remove("active")
+                closestPopUp.classList.remove("fade-out")
+            }, 300)
+        }
+    })
+}
+
 
 fetch("/tasks")
     .then(res => res.json())
@@ -137,22 +153,6 @@ fetch("/tasks")
         let currentPage = localStorage.getItem("lastPage") || "1"
         togglePage(currentPage)
         suspMenuBg.dataset.id = currentPage
-
-        // Popup functions
-        function closePopUp(){
-            const closeIcon = document.querySelectorAll(".close-icon")
-            closeIcon.forEach(icon => {
-                let closestPopUp = icon.closest(".popup-bg")
-                if(closestPopUp.classList.contains("active")){
-                    closestPopUp.classList.add("fade-out")
-
-                    setTimeout(() => {
-                        closestPopUp.classList.remove("active")
-                        closestPopUp.classList.remove("fade-out")
-                    }, 300)
-                }
-            })
-        }
 
         // Display warning function
         function fillWarning(type, message){
