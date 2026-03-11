@@ -40,7 +40,6 @@ Each task contains:
 * Clone the repository
 ```
 git clone https://github.com/LuizGustavo1001/TODO-WebPage-JS.git
-cd TODO-WebPage-JS
 ```
 
 * Open the terminal inside of the **project directory** and install the **npm** dependences:
