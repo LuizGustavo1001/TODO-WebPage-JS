@@ -33,18 +33,20 @@
                     </button>
                 </abbr>
                 <abbr title="Sort tasks">
-                    <button class="icon-button icon-bg menu-icon">
-                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="sort-icon">
-                            <path d="M8 0L2 6V7H14V6L8 0Z" fill="currentColor"/>
-                            <path d="M8 16L2 10V9H14V10L8 16Z" fill="currentColor"/>
-                        </svg>
-                        <ul class="menu-list flex-column inactive" data-id="sort">
+                    <details class="menu-icon">
+                        <summary class="icon-button icon-bg">
+                            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="sort-icon">
+                                <path d="M8 0L2 6V7H14V6L8 0Z" fill="currentColor"/>
+                                <path d="M8 16L2 10V9H14V10L8 16Z" fill="currentColor"/>
+                            </svg>
+                        </summary>
+                        <ul class="menu-list flex-column inactive" data-id="sort" style="--time: 0.3s">
                             <li data-id="alfAsc">(A-Z)</li>
                             <li data-id="alfDesc">(Z-A)</li>
                             <li data-id="latestDate">Recent</li>
                             <li data-id="oldestDate">Oldest</li>
                         </ul>
-                    </button>
+                    </details>
                 </abbr>
                 <button class="icon-button toggle-theme icon-bg">
                     <svg class="toggle-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="moon-icon">
