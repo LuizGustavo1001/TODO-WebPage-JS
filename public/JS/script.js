@@ -66,6 +66,30 @@ const fullSquare = `
     </svg>
 `
 
+
+// details/summary animation
+const details = document.querySelector(".menu-icon")
+const summary = document.querySelector(".menu-icon summary")
+const ul = document.querySelector(".menu-icon .menu-list")
+
+summary.addEventListener("click", (e) => {
+    e.preventDefault()
+
+    if(details.open){
+        ul.classList.remove("fade")
+        ul.classList.add("fade-out")
+
+        setTimeout(()=>{
+            details.open = false
+            ul.classList.remove("fade-out")
+        }, 300)
+    }else{
+        ul.classList.add("fade")
+        details.open = true
+    }
+})
+
+
 // Popup functions
 function closePopUp(){
     const closeIcon = document.querySelectorAll(".close-icon")
